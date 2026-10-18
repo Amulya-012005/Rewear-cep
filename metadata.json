@@ -1,0 +1,6 @@
+{
+  "name": "ReWear — Clothing Exchange Marketplace",
+  "description": "A sustainable fashion platform to swap styles, renew wardrobes, and reduce textile waste without cash payments.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
