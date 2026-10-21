@@ -6,27 +6,19 @@ import { INDIAN_STATE_CAPITALS } from '../data/indiaLocations.ts';
 import {
   ShoppingBag,
   Search,
-  Filter,
   MapPin,
-  Tag,
   ArrowRightLeft,
   Sparkles,
   CheckCircle2,
   Clock,
-  Shirt,
-  Leaf,
   ChevronDown,
   ChevronRight,
   Home,
   LogOut,
   X,
-  RotateCcw,
   MessageSquare,
   Compass,
-  Check,
-  Ban,
-  SlidersHorizontal,
-  Info
+  SlidersHorizontal
 } from 'lucide-react';
 
 interface BuyModuleViewProps {
@@ -67,7 +59,6 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
   // History / Requests search & filters
   const [requestStatusFilter, setRequestStatusFilter] = useState<string>('all');
-  const [historySearch, setHistorySearch] = useState('');
 
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showDemoMenu, setShowDemoMenu] = useState(false);
@@ -183,29 +174,29 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F8F4] text-[#1F2421] font-sans">
+    <div className="min-h-screen bg-[#07130D]/90 text-[#FDF0CD] font-sans backdrop-blur-xs">
       {/* 1. DEDICATED BUY MODULE HEADER */}
-      <header className="sticky top-0 z-40 bg-[#F8F8F4]/95 backdrop-blur-md border-b border-[#E6E6DC]">
+      <header className="sticky top-0 z-40 bg-[#08150E]/95 backdrop-blur-md border-b border-[#D4AF37]/30 shadow-lg">
         {/* Module Indicator Banner */}
-        <div className="bg-[#1A382B] text-white px-4 py-1.5 text-xs flex items-center justify-between">
+        <div className="bg-[#060E0A] text-[#FDF0CD] px-4 py-1.5 text-xs flex items-center justify-between border-b border-[#D4AF37]/20">
           <div className="flex items-center gap-2">
-            <ShoppingBag className="w-3.5 h-3.5 text-[#8CA58A]" />
-            <span className="font-semibold uppercase tracking-wider text-[11px]">Buy Clothes Module</span>
-            <span className="hidden sm:inline text-[#C5D9C4]">· Direct clothing exchange & discovery with zero cash fees</span>
+            <ShoppingBag className="w-3.5 h-3.5 text-[#FDE68A]" />
+            <span className="font-semibold uppercase tracking-wider text-[11px] text-[#FDE68A]">Buy Clothes Module</span>
+            <span className="hidden sm:inline text-[#E5D7B3]">· Direct clothing exchange & discovery with zero cash fees</span>
           </div>
 
           <div className="relative flex items-center gap-2">
-            <span className="text-[#C1DEC9] text-[11px] hidden sm:inline">Active Persona:</span>
+            <span className="text-[#EED895] text-[11px] hidden sm:inline">Active Persona:</span>
             <button
               onClick={() => setShowDemoMenu(!showDemoMenu)}
-              className="bg-[#12271E] hover:bg-[#0E1E17] px-2 py-0.5 rounded text-[11px] text-white flex items-center gap-1 border border-[#2D503C]"
+              className="bg-[#122A1E] hover:bg-[#183827] px-2.5 py-0.5 rounded text-[11px] text-[#FDE68A] flex items-center gap-1 border border-[#D4AF37]/40 shadow-xs"
             >
               <span>{user?.name || 'Guest'}</span>
-              <ChevronDown className="w-3 h-3" />
+              <ChevronDown className="w-3 h-3 text-[#FDE68A]/70" />
             </button>
 
             {showDemoMenu && (
-              <div className="absolute right-0 top-7 w-60 bg-white text-gray-800 rounded-xl shadow-xl border border-stone-200 py-1.5 z-50 text-xs">
+              <div className="absolute right-0 top-7 w-60 bg-[#FFF9E6] text-[#203628] rounded-xl shadow-2xl border border-[#EED895] py-1.5 z-50 text-xs">
                 {demoAccounts.map((d) => (
                   <button
                     key={d.email}
@@ -214,12 +205,12 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                       setShowDemoMenu(false);
                       onRefresh();
                     }}
-                    className={`w-full text-left px-3 py-1.5 hover:bg-[#F8F8F4] flex items-center justify-between ${
-                      user?.email === d.email ? 'font-bold text-[#234C3A] bg-[#EBF3ED]' : ''
+                    className={`w-full text-left px-3 py-1.5 hover:bg-[#FCEFC7] flex items-center justify-between ${
+                      user?.email === d.email ? 'font-bold text-[#8A6A1C] bg-[#FDF3D6]' : ''
                     }`}
                   >
                     <span>{d.name} ({d.city})</span>
-                    {d.role === 'admin' && <span className="text-[10px] bg-amber-100 text-amber-800 px-1 rounded">Admin</span>}
+                    {d.role === 'admin' && <span className="text-[10px] bg-[#8A6A1C] text-[#FFF9E6] px-1 rounded font-bold">Admin</span>}
                   </button>
                 ))}
               </div>
@@ -227,28 +218,32 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
           </div>
         </div>
 
-        {/* Buy Module Navigation Bar in exact order: 1. Dashboard, 2. Browse Clothes, 3. Requests Sent, 4. Successful Swaps, 5. Swap History, 6. How It Works, 7. Back to Home, 8. User Profile */}
+        {/* Buy Module Navigation Bar */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-18">
+          <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
-            <div onClick={onBackToHome} className="flex items-center gap-2.5 cursor-pointer">
-              <div className="w-9 h-9 rounded-xl bg-[#234C3A] flex items-center justify-center text-white">
-                <Shirt className="w-4 h-4 text-[#8CA58A]" />
+            <div onClick={onBackToHome} className="flex items-center gap-3 cursor-pointer group">
+              <div className="relative w-11 h-11 rounded-xl overflow-hidden shadow-lg border border-[#D4AF37]/50 group-hover:scale-105 transition-transform duration-200 shrink-0 bg-[#060E0A]">
+                <img
+                  src="/src/assets/images/rewear_brand_logo_1792598309821.jpg"
+                  alt="ReWear Logo"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
-                <span className="font-serif font-bold text-lg text-[#1F2421] block leading-none">ReWear</span>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-[#42614B]">Discovery Lounge</span>
+                <span className="font-serif font-bold text-lg text-[#FDE68A] block leading-none">ReWear</span>
+                <span className="text-[10px] uppercase font-bold tracking-wider text-[#EED895]">Discovery Lounge</span>
               </div>
             </div>
 
-            {/* Desktop Navigation Links in exact order */}
-            <nav className="hidden lg:flex items-center gap-1 text-sm font-medium">
+            {/* Desktop Navigation Links */}
+            <nav className="hidden lg:flex items-center gap-1.5 text-sm font-medium">
               <button
                 onClick={() => setTab('dashboard')}
-                className={`px-3 py-2 rounded-xl transition ${
+                className={`px-3.5 py-2 rounded-xl transition ${
                   activeTab === 'dashboard'
-                    ? 'bg-[#234C3A] text-white font-semibold shadow-xs'
-                    : 'text-[#5E6B63] hover:text-[#1F2421] hover:bg-[#EAEAE0]'
+                    ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold shadow-md border border-[#EED895]'
+                    : 'text-[#E5D7B3] hover:text-[#FDE68A] hover:bg-[#FFF9E6]/10'
                 }`}
               >
                 Dashboard
@@ -256,27 +251,27 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
               <button
                 onClick={() => setTab('browse')}
-                className={`px-3 py-2 rounded-xl transition flex items-center gap-1.5 ${
+                className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 ${
                   activeTab === 'browse'
-                    ? 'bg-[#234C3A] text-white font-semibold shadow-xs'
-                    : 'text-[#5E6B63] hover:text-[#1F2421] hover:bg-[#EAEAE0]'
+                    ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold shadow-md border border-[#EED895]'
+                    : 'text-[#E5D7B3] hover:text-[#FDE68A] hover:bg-[#FFF9E6]/10'
                 }`}
               >
-                <Compass className="w-4 h-4" />
+                <Compass className="w-4 h-4 text-[#FDE68A]" />
                 <span>Browse Clothes</span>
               </button>
 
               <button
                 onClick={() => setTab('requests')}
-                className={`px-3 py-2 rounded-xl transition relative flex items-center gap-1.5 ${
+                className={`px-3.5 py-2 rounded-xl transition relative flex items-center gap-1.5 ${
                   activeTab === 'requests'
-                    ? 'bg-[#234C3A] text-white font-semibold shadow-xs'
-                    : 'text-[#5E6B63] hover:text-[#1F2421] hover:bg-[#EAEAE0]'
+                    ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold shadow-md border border-[#EED895]'
+                    : 'text-[#E5D7B3] hover:text-[#FDE68A] hover:bg-[#FFF9E6]/10'
                 }`}
               >
                 <span>Requests Sent</span>
                 {pendingRequestsSent.length > 0 && (
-                  <span className="text-[10px] font-bold px-1.5 rounded-full bg-amber-500 text-white">
+                  <span className="text-[10px] font-bold px-1.5 rounded-full bg-[#D4AF37] text-[#102418]">
                     {pendingRequestsSent.length}
                   </span>
                 )}
@@ -284,15 +279,15 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
               <button
                 onClick={() => setTab('successful-swaps')}
-                className={`px-3 py-2 rounded-xl transition flex items-center gap-1.5 ${
+                className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 ${
                   activeTab === 'successful-swaps'
-                    ? 'bg-[#234C3A] text-white font-semibold shadow-xs'
-                    : 'text-[#5E6B63] hover:text-[#1F2421] hover:bg-[#EAEAE0]'
+                    ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold shadow-md border border-[#EED895]'
+                    : 'text-[#E5D7B3] hover:text-[#FDE68A] hover:bg-[#FFF9E6]/10'
                 }`}
               >
                 <span>Successful Swaps</span>
                 {successfulSwaps.length > 0 && (
-                  <span className="text-[10px] font-bold px-1.5 rounded-full bg-emerald-600 text-white">
+                  <span className="text-[10px] font-bold px-1.5 rounded-full bg-[#183E2A] text-[#FDE68A] border border-[#D4AF37]/50">
                     {successfulSwaps.length}
                   </span>
                 )}
@@ -300,10 +295,10 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
               <button
                 onClick={() => setTab('history')}
-                className={`px-3 py-2 rounded-xl transition ${
+                className={`px-3.5 py-2 rounded-xl transition ${
                   activeTab === 'history'
-                    ? 'bg-[#234C3A] text-white font-semibold shadow-xs'
-                    : 'text-[#5E6B63] hover:text-[#1F2421] hover:bg-[#EAEAE0]'
+                    ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold shadow-md border border-[#EED895]'
+                    : 'text-[#E5D7B3] hover:text-[#FDE68A] hover:bg-[#FFF9E6]/10'
                 }`}
               >
                 Swap History
@@ -311,10 +306,10 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
               <button
                 onClick={() => setTab('how-it-works')}
-                className={`px-3 py-2 rounded-xl transition ${
+                className={`px-3.5 py-2 rounded-xl transition ${
                   activeTab === 'how-it-works'
-                    ? 'bg-[#234C3A] text-white font-semibold shadow-xs'
-                    : 'text-[#5E6B63] hover:text-[#1F2421] hover:bg-[#EAEAE0]'
+                    ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold shadow-md border border-[#EED895]'
+                    : 'text-[#E5D7B3] hover:text-[#FDE68A] hover:bg-[#FFF9E6]/10'
                 }`}
               >
                 How It Works
@@ -322,10 +317,10 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
               <button
                 onClick={onBackToHome}
-                className="px-3 py-2 rounded-xl text-[#5E6B63] hover:text-[#1F2421] hover:bg-[#EAEAE0] transition flex items-center gap-1"
+                className="px-3.5 py-2 rounded-xl text-[#E5D7B3] hover:text-[#FDE68A] hover:bg-[#FFF9E6]/10 transition flex items-center gap-1.5"
                 title="Return to main ReWear landing page"
               >
-                <Home className="w-4 h-4" />
+                <Home className="w-4 h-4 text-[#FDE68A]" />
                 <span>Back to Home</span>
               </button>
             </nav>
@@ -334,9 +329,9 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setTab('browse')}
-                className="hidden sm:flex items-center gap-1.5 bg-[#234C3A] hover:bg-[#1A382B] text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-xs transition"
+                className="hidden sm:flex items-center gap-1.5 bg-[#FFF9E6] hover:bg-[#FCEFC7] text-[#1A2E22] px-4 py-2 rounded-xl text-xs font-bold shadow-md border border-[#EED895] transition"
               >
-                <Search className="w-3.5 h-3.5 text-[#8CA58A]" />
+                <Search className="w-3.5 h-3.5 text-[#8A6A1C]" />
                 <span>Explore Clothes</span>
               </button>
 
@@ -344,27 +339,27 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                 <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="p-1 rounded-xl border border-[#DCDCD0] hover:bg-white transition flex items-center gap-1.5"
+                    className="p-1 rounded-xl border border-[#D4AF37]/40 hover:bg-[#FFF9E6]/10 transition flex items-center gap-1.5"
                   >
                     <img
                       src={user.avatarUrl}
                       alt={user.name}
-                      className="w-7 h-7 rounded-lg object-cover"
+                      className="w-8 h-8 rounded-lg object-cover border border-[#D4AF37]/30"
                     />
-                    <ChevronDown className="w-3 h-3 text-[#5E6B63]" />
+                    <ChevronDown className="w-3.5 h-3.5 text-[#FDE68A]" />
                   </button>
 
                   {showUserMenu && (
-                    <div className="absolute right-0 top-10 w-48 bg-white rounded-xl shadow-xl border border-stone-200 py-1.5 z-50 text-xs">
-                      <div className="px-3 py-1.5 border-b border-stone-100">
-                        <p className="font-semibold text-stone-900">{user.name}</p>
-                        <p className="text-[10px] text-stone-500">{user.city}</p>
+                    <div className="absolute right-0 top-12 w-52 bg-[#FFF9E6] text-[#203628] rounded-2xl shadow-2xl border border-[#EED895] py-2 z-50 text-xs">
+                      <div className="px-4 py-2 border-b border-[#EED895]/60">
+                        <p className="font-bold text-[#1A2E22]">{user.name}</p>
+                        <p className="text-[11px] text-[#7A6430]">{user.city}</p>
                       </div>
                       <button
                         onClick={onBackToHome}
-                        className="w-full text-left px-3 py-1.5 hover:bg-[#F8F8F4] flex items-center gap-2 text-stone-700"
+                        className="w-full text-left px-4 py-2 hover:bg-[#FCEFC7] flex items-center gap-2 text-[#243427] font-medium"
                       >
-                        <Home className="w-3.5 h-3.5" />
+                        <Home className="w-3.5 h-3.5 text-[#8A6A1C]" />
                         <span>Back to Home</span>
                       </button>
                       <button
@@ -373,7 +368,7 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                           logout();
                           onBackToHome();
                         }}
-                        className="w-full text-left px-3 py-1.5 hover:bg-rose-50 flex items-center gap-2 text-rose-700"
+                        className="w-full text-left px-4 py-2 hover:bg-rose-100 flex items-center gap-2 text-rose-800 font-semibold"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         <span>Sign Out</span>
@@ -386,46 +381,46 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
           </div>
 
           {/* Mobile sub navigation */}
-          <div className="lg:hidden flex items-center justify-around py-2 border-t border-[#E6E6DC] text-xs font-medium text-[#5E6B63] overflow-x-auto">
+          <div className="lg:hidden flex items-center justify-around py-2 border-t border-[#D4AF37]/20 text-xs font-medium text-[#E5D7B3] overflow-x-auto">
             <button
               onClick={() => setTab('dashboard')}
-              className={`px-2 py-1 rounded-lg ${activeTab === 'dashboard' ? 'bg-[#234C3A] text-white font-bold' : ''}`}
+              className={`px-2.5 py-1 rounded-lg ${activeTab === 'dashboard' ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold' : ''}`}
             >
               Dashboard
             </button>
             <button
               onClick={() => setTab('browse')}
-              className={`px-2 py-1 rounded-lg ${activeTab === 'browse' ? 'bg-[#234C3A] text-white font-bold' : ''}`}
+              className={`px-2.5 py-1 rounded-lg ${activeTab === 'browse' ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold' : ''}`}
             >
               Browse
             </button>
             <button
               onClick={() => setTab('requests')}
-              className={`px-2 py-1 rounded-lg ${activeTab === 'requests' ? 'bg-[#234C3A] text-white font-bold' : ''}`}
+              className={`px-2.5 py-1 rounded-lg ${activeTab === 'requests' ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold' : ''}`}
             >
               Sent ({outgoingRequests.length})
             </button>
             <button
               onClick={() => setTab('successful-swaps')}
-              className={`px-2 py-1 rounded-lg ${activeTab === 'successful-swaps' ? 'bg-[#234C3A] text-white font-bold' : ''}`}
+              className={`px-2.5 py-1 rounded-lg ${activeTab === 'successful-swaps' ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold' : ''}`}
             >
               Swaps ({successfulSwaps.length})
             </button>
             <button
               onClick={() => setTab('history')}
-              className={`px-2 py-1 rounded-lg ${activeTab === 'history' ? 'bg-[#234C3A] text-white font-bold' : ''}`}
+              className={`px-2.5 py-1 rounded-lg ${activeTab === 'history' ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold' : ''}`}
             >
               History
             </button>
             <button
               onClick={() => setTab('how-it-works')}
-              className={`px-2 py-1 rounded-lg ${activeTab === 'how-it-works' ? 'bg-[#234C3A] text-white font-bold' : ''}`}
+              className={`px-2.5 py-1 rounded-lg ${activeTab === 'how-it-works' ? 'bg-[#FFF9E6] text-[#1A2E22] font-bold' : ''}`}
             >
               Guide
             </button>
             <button
               onClick={onBackToHome}
-              className="px-2 py-1 rounded-lg text-stone-600 hover:text-stone-900"
+              className="px-2.5 py-1 rounded-lg text-[#FDE68A] hover:underline"
             >
               Home
             </button>
@@ -439,15 +434,15 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
         {activeTab === 'dashboard' && (
           <div className="space-y-8">
             {/* Welcome Banner */}
-            <div className="bg-gradient-to-r from-[#234C3A] via-[#2D5A45] to-[#1E3F30] text-white rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="bg-gradient-to-r from-[#142A1D] via-[#1E3F2E] to-[#122A1E] text-[#FDF0CD] rounded-3xl p-6 sm:p-8 border border-[#D4AF37]/40 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="space-y-2">
-                <span className="text-xs uppercase tracking-wider font-semibold text-[#C1DEC9]">
+                <span className="text-xs uppercase tracking-wider font-semibold text-[#FDE68A]">
                   Buyer Barter Lounge
                 </span>
-                <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#FAF8F4]">
+                <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#FDE68A]">
                   Discover Clothes Ready for Exchange
                 </h1>
-                <p className="text-xs sm:text-sm text-[#D4E3D8] max-w-xl">
+                <p className="text-xs sm:text-sm text-[#E5D7B3] max-w-xl">
                   Browse authentic sarees, kurtas, denim, and jackets from members across Hubballi, Bengaluru, Mysuru, and Pune. Propose a direct barter without cash.
                 </p>
               </div>
@@ -455,89 +450,89 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setTab('browse')}
-                  className="bg-[#E7DEC8] hover:bg-[#DCD1B8] text-[#1A382B] font-bold px-5 py-3 rounded-xl text-xs sm:text-sm shadow-md transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
+                  className="bg-[#FFF9E6] hover:bg-[#FCEFC7] text-[#1A2E22] font-bold px-6 py-3 rounded-xl text-xs sm:text-sm shadow-xl transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 border border-[#EED895]"
                 >
-                  <Compass className="w-4 h-4 text-[#1A382B]" />
+                  <Compass className="w-4 h-4 text-[#8A6A1C]" />
                   <span>Browse All Clothes</span>
                 </button>
               </div>
             </div>
 
-            {/* Key Metrics Cards */}
+            {/* Key Metrics Cards in Light Golden Yellow */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               <div
                 onClick={() => setTab('browse')}
-                className="bg-white p-5 rounded-2xl border border-[#E6E6DC] shadow-xs cursor-pointer hover:border-[#234C3A] transition"
+                className="bg-[#FFF9E6] p-5 rounded-2xl border border-[#EED895] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.35)] cursor-pointer hover:border-[#D4AF37] hover:scale-[1.02] transition text-[#1A2E22]"
               >
-                <div className="flex items-center justify-between text-xs text-[#5E6B63] font-medium">
-                  <span>Available Clothes</span>
-                  <Shirt className="w-4 h-4 text-[#234C3A]" />
+                <div className="flex items-center justify-between text-xs text-[#6B5B30] font-medium">
+                  <span className="font-bold">Available Clothes</span>
+                  <ShoppingBag className="w-4 h-4 text-[#8A6A1C]" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-serif font-bold text-[#1F2421] mt-2">
+                <div className="text-2xl sm:text-3xl font-serif font-bold text-[#1A2E22] mt-2">
                   {availableItemsCount}
                 </div>
-                <div className="text-[11px] text-[#5E6B63] mt-1">Ready for 1:1 barter trade</div>
+                <div className="text-[11px] text-[#7A6430] mt-1">Ready for 1:1 barter trade</div>
               </div>
 
               <div
                 onClick={() => setTab('requests')}
-                className="bg-white p-5 rounded-2xl border border-[#E6E6DC] shadow-xs cursor-pointer hover:border-amber-600 transition"
+                className="bg-[#FFF9E6] p-5 rounded-2xl border border-[#EED895] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.35)] cursor-pointer hover:border-[#D4AF37] hover:scale-[1.02] transition text-[#1A2E22]"
               >
-                <div className="flex items-center justify-between text-xs text-[#5E6B63] font-medium">
-                  <span>Swap Requests Sent</span>
-                  <ArrowRightLeft className="w-4 h-4 text-amber-600" />
+                <div className="flex items-center justify-between text-xs text-[#6B5B30] font-medium">
+                  <span className="font-bold">Swap Requests Sent</span>
+                  <ArrowRightLeft className="w-4 h-4 text-[#8A6A1C]" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-serif font-bold text-amber-700 mt-2">
+                <div className="text-2xl sm:text-3xl font-serif font-bold text-[#8A6A1C] mt-2">
                   {outgoingRequests.length}
                 </div>
-                <div className="text-[11px] text-[#5E6B63] mt-1">{pendingRequestsSent.length} pending response</div>
+                <div className="text-[11px] text-[#7A6430] mt-1">{pendingRequestsSent.length} pending response</div>
               </div>
 
               <div
                 onClick={() => setTab('requests')}
-                className="bg-white p-5 rounded-2xl border border-[#E6E6DC] shadow-xs cursor-pointer hover:border-[#42614B] transition"
+                className="bg-[#FFF9E6] p-5 rounded-2xl border border-[#EED895] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.35)] cursor-pointer hover:border-[#D4AF37] hover:scale-[1.02] transition text-[#1A2E22]"
               >
-                <div className="flex items-center justify-between text-xs text-[#5E6B63] font-medium">
-                  <span>Pending Responses</span>
-                  <Clock className="w-4 h-4 text-[#42614B]" />
+                <div className="flex items-center justify-between text-xs text-[#6B5B30] font-medium">
+                  <span className="font-bold">Pending Responses</span>
+                  <Clock className="w-4 h-4 text-[#8A6A1C]" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-serif font-bold text-[#42614B] mt-2">
+                <div className="text-2xl sm:text-3xl font-serif font-bold text-[#1E3F2E] mt-2">
                   {pendingRequestsSent.length}
                 </div>
-                <div className="text-[11px] text-[#5E6B63] mt-1">Awaiting owner review</div>
+                <div className="text-[11px] text-[#7A6430] mt-1">Awaiting owner review</div>
               </div>
 
               <div
                 onClick={() => setTab('successful-swaps')}
-                className="bg-white p-5 rounded-2xl border border-[#E6E6DC] shadow-xs cursor-pointer hover:border-emerald-600 transition"
+                className="bg-[#FFF9E6] p-5 rounded-2xl border border-[#EED895] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.35)] cursor-pointer hover:border-[#D4AF37] hover:scale-[1.02] transition text-[#1A2E22]"
               >
-                <div className="flex items-center justify-between text-xs text-[#5E6B63] font-medium">
-                  <span>Successful Swaps</span>
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <div className="flex items-center justify-between text-xs text-[#6B5B30] font-medium">
+                  <span className="font-bold">Successful Swaps</span>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-700" />
                 </div>
                 <div className="text-2xl sm:text-3xl font-serif font-bold text-emerald-800 mt-2">
                   {successfulSwaps.length}
                 </div>
-                <div className="text-[11px] text-[#5E6B63] mt-1">Confirmed exchanges</div>
+                <div className="text-[11px] text-[#7A6430] mt-1">Confirmed exchanges</div>
               </div>
             </div>
 
-            {/* Recommended Nearby Listings */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E6E6DC] shadow-xs space-y-5">
+            {/* Recommended Nearby Listings Box in Light Golden Yellow */}
+            <div className="bg-[#FFF9E6] rounded-3xl p-6 sm:p-8 border border-[#EED895] shadow-[0_12px_35px_rgba(0,0,0,0.3)] space-y-5 text-[#1A2E22]">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-[#234C3A]" />
-                    <h2 className="font-serif font-bold text-lg text-[#1F2421]">
+                    <MapPin className="w-4 h-4 text-[#8A6A1C]" />
+                    <h2 className="font-serif font-bold text-lg text-[#1A2E22]">
                       Recommended Clothes in {user?.city || 'Your Area'}
                     </h2>
                   </div>
-                  <p className="text-xs text-[#5E6B63]">Local garments to minimize transit emissions and enable easy meetups</p>
+                  <p className="text-xs text-[#6B5B30]">Local garments to minimize transit emissions and enable easy meetups</p>
                 </div>
 
                 <button
                   onClick={() => setTab('browse')}
-                  className="text-xs font-semibold text-[#234C3A] hover:underline flex items-center gap-1"
+                  className="text-xs font-bold text-[#8A6A1C] hover:underline flex items-center gap-1"
                 >
                   <span>Explore all</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -549,29 +544,29 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                   <div
                     key={item.id}
                     onClick={() => onSelectItem(item)}
-                    className="group bg-[#F8F8F4] rounded-2xl border border-[#E6E6DC] overflow-hidden hover:shadow-md transition cursor-pointer flex flex-col justify-between"
+                    className="group bg-[#FEF6DB] rounded-2xl border border-[#E8D494] overflow-hidden hover:shadow-xl transition cursor-pointer flex flex-col justify-between"
                   >
-                    <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden">
+                    <div className="relative aspect-[3/4] bg-[#F9ECC4] overflow-hidden">
                       <img
                         src={item.imageUrl}
                         alt={item.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <div className="absolute top-2.5 left-2.5 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded font-bold backdrop-blur-xs">
+                      <div className="absolute top-2.5 left-2.5 bg-black/60 text-[#FDE68A] text-[10px] px-2 py-0.5 rounded font-bold backdrop-blur-xs">
                         Size: {item.size}
                       </div>
-                      <div className="absolute bottom-2.5 right-2.5 bg-[#234C3A] text-white text-[10px] px-2 py-0.5 rounded font-bold shadow-xs">
+                      <div className="absolute bottom-2.5 right-2.5 bg-[#183E2A] text-[#FDE68A] text-[10px] px-2 py-0.5 rounded font-bold shadow-xs border border-[#D4AF37]/40">
                         {item.city}
                       </div>
                     </div>
 
                     <div className="p-3.5 space-y-1.5">
-                      <span className="text-[10px] uppercase font-bold text-[#234C3A] block truncate">{item.brand}</span>
-                      <h4 className="font-serif font-bold text-xs text-stone-900 truncate group-hover:text-[#234C3A] transition">
+                      <span className="text-[10px] uppercase font-bold text-[#8A6A1C] block truncate">{item.brand}</span>
+                      <h4 className="font-serif font-bold text-xs text-[#1A2E22] truncate group-hover:text-[#8A6A1C] transition">
                         {item.title}
                       </h4>
-                      <div className="flex items-center justify-between text-[11px] text-[#5E6B63] pt-1 border-t border-stone-200">
-                        <span className="font-bold text-[#1F2421]">≈ ₹{item.estimatedValue}</span>
+                      <div className="flex items-center justify-between text-[11px] text-[#6B5B30] pt-1 border-t border-[#E8D494]">
+                        <span className="font-bold text-[#1A2E22]">≈ ₹{item.estimatedValue}</span>
                         <span>{item.condition}</span>
                       </div>
                     </div>
@@ -587,25 +582,25 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-serif font-bold text-[#1F2421]">Browse Clothes for Exchange</h1>
-                <p className="text-xs text-[#5E6B63]">Discover pre-loved shirts, kurtas, denim, and dresses available for 1:1 barter</p>
+                <h1 className="text-2xl font-serif font-bold text-[#FDE68A]">Browse Clothes for Exchange</h1>
+                <p className="text-xs text-[#E5D7B3]">Discover pre-loved shirts, kurtas, denim, and dresses available for 1:1 barter</p>
               </div>
 
               <div className="flex items-center gap-2 self-start sm:self-auto">
                 <button
                   onClick={() => setShowMobileFilterDrawer(!showMobileFilterDrawer)}
-                  className="lg:hidden px-3 py-2 bg-white border border-[#E6E6DC] rounded-xl text-xs font-semibold text-[#1F2421] flex items-center gap-1.5 shadow-xs"
+                  className="lg:hidden px-3.5 py-2 bg-[#FFF9E6] border border-[#EED895] rounded-xl text-xs font-bold text-[#1A2E22] flex items-center gap-1.5 shadow-md"
                 >
-                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-[#8A6A1C]" />
                   <span>Filters</span>
                 </button>
 
-                <div className="flex items-center gap-1.5 text-xs text-[#5E6B63] bg-white px-3 py-2 rounded-xl border border-[#E6E6DC]">
-                  <span>Sort by:</span>
+                <div className="flex items-center gap-1.5 text-xs text-[#543D10] bg-[#FFF9E6] px-3.5 py-2 rounded-xl border border-[#EED895] shadow-md">
+                  <span className="font-medium">Sort by:</span>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
-                    className="font-bold text-[#234C3A] bg-transparent focus:outline-none"
+                    className="font-bold text-[#1A2E22] bg-transparent focus:outline-none cursor-pointer"
                   >
                     <option value="newest">Newest First</option>
                     <option value="nearest">Nearest City</option>
@@ -618,18 +613,18 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
             {/* Top Search Input */}
             <div className="relative">
-              <Search className="w-4 h-4 text-stone-400 absolute left-4 top-3.5" />
+              <Search className="w-4 h-4 text-[#8A6A1C] absolute left-4 top-3.5" />
               <input
                 type="text"
-                placeholder="Search by garment title, brand (Levi's, FabIndia, Zara, Biba), or description..."
+                placeholder="Search by garment title, brand (FabIndia, Levi's, Zara, Biba), or description..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 rounded-2xl border border-[#E6E6DC] bg-white text-xs sm:text-sm text-stone-900 focus:outline-none focus:border-[#234C3A] shadow-xs"
+                className="w-full pl-11 pr-4 py-3 rounded-2xl border border-[#EED895] bg-[#FFFDF5] text-xs sm:text-sm text-[#1A2E22] placeholder:text-[#8C7A58] focus:outline-none focus:border-[#B89635] shadow-[0_4px_16px_rgba(0,0,0,0.2)]"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-4 top-3.5 text-stone-400 hover:text-stone-700"
+                  className="absolute right-4 top-3.5 text-[#8A6A1C] hover:text-[#543D10]"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -639,34 +634,34 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
             {/* Active Filter Chips */}
             {hasActiveFilters && (
               <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
-                <span className="text-stone-400 font-medium">Active filters:</span>
+                <span className="text-[#EED895] font-medium">Active filters:</span>
                 {selectedCategory !== 'All' && (
-                  <span className="bg-white border border-[#E6E6DC] px-2.5 py-1 rounded-lg text-[#234C3A] font-medium flex items-center gap-1">
+                  <span className="bg-[#FFF9E6] border border-[#EED895] px-2.5 py-1 rounded-lg text-[#1A2E22] font-semibold flex items-center gap-1 shadow-xs">
                     {selectedCategory}
-                    <X className="w-3 h-3 cursor-pointer" onClick={() => setSelectedCategory('All')} />
+                    <X className="w-3 h-3 cursor-pointer text-[#8A6A1C]" onClick={() => setSelectedCategory('All')} />
                   </span>
                 )}
                 {cityFilter !== 'All' && (
-                  <span className="bg-white border border-[#E6E6DC] px-2.5 py-1 rounded-lg text-[#234C3A] font-medium flex items-center gap-1">
+                  <span className="bg-[#FFF9E6] border border-[#EED895] px-2.5 py-1 rounded-lg text-[#1A2E22] font-semibold flex items-center gap-1 shadow-xs">
                     City: {cityFilter}
-                    <X className="w-3 h-3 cursor-pointer" onClick={() => setCityFilter('All')} />
+                    <X className="w-3 h-3 cursor-pointer text-[#8A6A1C]" onClick={() => setCityFilter('All')} />
                   </span>
                 )}
                 {selectedSize !== 'All' && (
-                  <span className="bg-white border border-[#E6E6DC] px-2.5 py-1 rounded-lg text-[#234C3A] font-medium flex items-center gap-1">
+                  <span className="bg-[#FFF9E6] border border-[#EED895] px-2.5 py-1 rounded-lg text-[#1A2E22] font-semibold flex items-center gap-1 shadow-xs">
                     Size: {selectedSize}
-                    <X className="w-3 h-3 cursor-pointer" onClick={() => setSelectedSize('All')} />
+                    <X className="w-3 h-3 cursor-pointer text-[#8A6A1C]" onClick={() => setSelectedSize('All')} />
                   </span>
                 )}
                 {selectedCondition !== 'All' && (
-                  <span className="bg-white border border-[#E6E6DC] px-2.5 py-1 rounded-lg text-[#234C3A] font-medium flex items-center gap-1">
+                  <span className="bg-[#FFF9E6] border border-[#EED895] px-2.5 py-1 rounded-lg text-[#1A2E22] font-semibold flex items-center gap-1 shadow-xs">
                     {selectedCondition}
-                    <X className="w-3 h-3 cursor-pointer" onClick={() => setSelectedCondition('All')} />
+                    <X className="w-3 h-3 cursor-pointer text-[#8A6A1C]" onClick={() => setSelectedCondition('All')} />
                   </span>
                 )}
                 <button
                   onClick={clearFilters}
-                  className="text-xs font-bold text-rose-700 hover:underline ml-2"
+                  className="text-xs font-bold text-[#FDE68A] underline ml-2 hover:text-[#FFF9E6]"
                 >
                   Clear All Filters
                 </button>
@@ -674,16 +669,16 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
             )}
 
             {/* 28 Indian State Capitals Quick Filter Strip */}
-            <div className="space-y-1.5 pt-1 border border-[#E6E6DC] bg-white p-3 rounded-2xl shadow-xs">
-              <div className="flex items-center justify-between text-xs font-semibold text-stone-500 uppercase tracking-wider">
-                <span className="flex items-center gap-1.5 text-[#234C3A]">
-                  <MapPin className="w-3.5 h-3.5 text-[#234C3A]" />
+            <div className="space-y-1.5 pt-1 border border-[#EED895] bg-[#FFF9E6] p-3 rounded-2xl shadow-md text-[#1A2E22]">
+              <div className="flex items-center justify-between text-xs font-bold text-[#6B5B30] uppercase tracking-wider">
+                <span className="flex items-center gap-1.5 text-[#8A6A1C]">
+                  <MapPin className="w-3.5 h-3.5 text-[#8A6A1C]" />
                   28 Indian State Capitals
                 </span>
                 {cityFilter !== 'All' && (
                   <button
                     onClick={() => setCityFilter('All')}
-                    className="text-[#234C3A] font-bold text-[11px] hover:underline"
+                    className="text-[#8A6A1C] font-bold text-[11px] hover:underline"
                   >
                     Clear City Filter ({cityFilter})
                   </button>
@@ -692,10 +687,10 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
                 <button
                   onClick={() => setCityFilter('All')}
-                  className={`px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+                  className={`px-3 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition ${
                     cityFilter === 'All'
-                      ? 'bg-[#234C3A] text-white shadow-xs'
-                      : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+                      ? 'bg-[#183E2A] text-[#FDE68A] shadow-xs'
+                      : 'bg-[#FEF4D5] text-[#1A2E22] hover:bg-[#FCEFC7]'
                   }`}
                 >
                   All Capitals
@@ -706,13 +701,13 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                     onClick={() => setCityFilter(sc.capital)}
                     className={`px-2.5 py-1 rounded-lg text-xs whitespace-nowrap transition flex items-center gap-1 ${
                       cityFilter.toLowerCase() === sc.capital.toLowerCase()
-                        ? 'bg-[#234C3A] text-white font-bold shadow-xs'
-                        : 'bg-[#F2ECE1] text-stone-700 hover:bg-[#E7DFD0]'
+                        ? 'bg-[#183E2A] text-[#FDE68A] font-bold shadow-xs'
+                        : 'bg-[#FEF4D5] text-[#1A2E22] hover:bg-[#FCEFC7]'
                     }`}
                     title={`${sc.capital}, ${sc.state}`}
                   >
                     <span>{sc.capital}</span>
-                    <span className="text-[10px] opacity-60">({sc.state.split(' ')[0]})</span>
+                    <span className="text-[10px] opacity-70">({sc.state.split(' ')[0]})</span>
                   </button>
                 ))}
               </div>
@@ -720,12 +715,12 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
             {/* Browse Layout: Sidebar + Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-              {/* Desktop Filter Sidebar */}
-              <div className="hidden lg:block bg-white p-6 rounded-3xl border border-[#E6E6DC] shadow-xs space-y-6 sticky top-28">
-                <div className="flex items-center justify-between pb-3 border-b border-stone-100">
-                  <span className="font-serif font-bold text-sm text-[#1F2421]">Filter Clothes</span>
+              {/* Desktop Filter Sidebar in Light Golden Yellow */}
+              <div className="hidden lg:block bg-[#FFF9E6] p-6 rounded-3xl border border-[#EED895] shadow-[0_12px_35px_rgba(0,0,0,0.3)] space-y-6 sticky top-28 text-[#1A2E22]">
+                <div className="flex items-center justify-between pb-3 border-b border-[#EED895]/60">
+                  <span className="font-serif font-bold text-sm text-[#1A2E22]">Filter Clothes</span>
                   {hasActiveFilters && (
-                    <button onClick={clearFilters} className="text-[11px] text-[#234C3A] font-semibold hover:underline">
+                    <button onClick={clearFilters} className="text-[11px] text-[#8A6A1C] font-bold hover:underline">
                       Reset
                     </button>
                   )}
@@ -733,7 +728,7 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
                 {/* Category */}
                 <div className="space-y-2">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">Category</span>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B5B30] block">Category</span>
                   <div className="space-y-1">
                     {categories.map((cat) => (
                       <button
@@ -741,8 +736,8 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                         onClick={() => setSelectedCategory(cat)}
                         className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition ${
                           selectedCategory === cat
-                            ? 'bg-[#EBF3ED] font-bold text-[#234C3A]'
-                            : 'text-stone-600 hover:bg-stone-50'
+                            ? 'bg-[#183E2A] font-bold text-[#FDE68A]'
+                            : 'text-[#203628] hover:bg-[#FEF4D5]'
                         }`}
                       >
                         {cat}
@@ -752,15 +747,15 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                 </div>
 
                 {/* City Location */}
-                <div className="space-y-2 pt-2 border-t border-stone-100">
+                <div className="space-y-2 pt-2 border-t border-[#EED895]/60">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B5B30] block">
                       Indian Capital City
                     </span>
                     {cityFilter !== 'All' && (
                       <button
                         onClick={() => setCityFilter('All')}
-                        className="text-[10px] text-[#234C3A] font-bold hover:underline"
+                        className="text-[10px] text-[#8A6A1C] font-bold hover:underline"
                       >
                         Reset
                       </button>
@@ -769,7 +764,7 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                   <select
                     value={cityFilter}
                     onChange={(e) => setCityFilter(e.target.value)}
-                    className="w-full px-2.5 py-2 rounded-xl border border-stone-200 text-xs font-semibold focus:ring-2 focus:ring-[#234C3A] bg-white text-stone-800 cursor-pointer"
+                    className="w-full px-2.5 py-2 rounded-xl border border-[#EED895] text-xs font-semibold bg-[#FFFDF5] text-[#1A2E22] cursor-pointer"
                   >
                     <option value="All">All 28 Capitals (Pan-India)</option>
                     <optgroup label="28 Capital Cities of Indian States">
@@ -793,8 +788,8 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                         onClick={() => setCityFilter(cap)}
                         className={`text-[11px] px-2 py-0.5 rounded-md transition ${
                           cityFilter === cap
-                            ? 'bg-[#234C3A] text-white font-bold'
-                            : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                            ? 'bg-[#183E2A] text-[#FDE68A] font-bold'
+                            : 'bg-[#FEF4D5] text-[#1A2E22] hover:bg-[#FCEFC7]'
                         }`}
                       >
                         {cap}
@@ -804,8 +799,8 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                 </div>
 
                 {/* Size */}
-                <div className="space-y-2 pt-2 border-t border-stone-100">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">Size</span>
+                <div className="space-y-2 pt-2 border-t border-[#EED895]/60">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B5B30] block">Size</span>
                   <div className="flex flex-wrap gap-1.5">
                     {sizes.map((s) => (
                       <button
@@ -813,8 +808,8 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                         onClick={() => setSelectedSize(s)}
                         className={`py-1 px-2.5 rounded-lg text-xs transition ${
                           selectedSize === s
-                            ? 'bg-[#234C3A] text-white font-bold'
-                            : 'bg-stone-50 text-stone-600 hover:bg-stone-100'
+                            ? 'bg-[#183E2A] text-[#FDE68A] font-bold'
+                            : 'bg-[#FEF4D5] text-[#1A2E22] hover:bg-[#FCEFC7]'
                         }`}
                       >
                         {s}
@@ -824,8 +819,8 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                 </div>
 
                 {/* Condition */}
-                <div className="space-y-2 pt-2 border-t border-stone-100">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">Condition</span>
+                <div className="space-y-2 pt-2 border-t border-[#EED895]/60">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B5B30] block">Condition</span>
                   <div className="space-y-1">
                     {conditions.map((c) => (
                       <button
@@ -833,8 +828,8 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                         onClick={() => setSelectedCondition(c)}
                         className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition ${
                           selectedCondition === c
-                            ? 'bg-[#EBF3ED] font-bold text-[#234C3A]'
-                            : 'text-stone-600 hover:bg-stone-50'
+                            ? 'bg-[#183E2A] font-bold text-[#FDE68A]'
+                            : 'text-[#203628] hover:bg-[#FEF4D5]'
                         }`}
                       >
                         {c}
@@ -846,24 +841,24 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
               {/* Product Grid Area */}
               <div className="lg:col-span-3 space-y-4">
-                <div className="flex items-center justify-between text-xs text-[#5E6B63]">
-                  <span>Showing <strong>{filteredListings.length}</strong> clothing items</span>
-                  <span className="text-[11px] bg-[#EAF2EC] text-[#234C3A] px-2.5 py-0.5 rounded-full font-semibold">
+                <div className="flex items-center justify-between text-xs text-[#E5D7B3]">
+                  <span>Showing <strong className="text-[#FDE68A]">{filteredListings.length}</strong> clothing items</span>
+                  <span className="text-[11px] bg-[#183E2A] text-[#FDE68A] px-2.5 py-0.5 rounded-full font-semibold border border-[#D4AF37]/30">
                     100% Cashless Barter
                   </span>
                 </div>
 
                 {filteredListings.length === 0 ? (
-                  <div className="text-center py-16 px-4 bg-white rounded-3xl border border-dashed border-[#DCDCD0] space-y-3">
-                    <Shirt className="w-12 h-12 text-stone-300 mx-auto" />
-                    <h3 className="font-serif font-bold text-stone-800 text-base">No clothes match your filters</h3>
-                    <p className="text-xs text-stone-500 max-w-sm mx-auto">
+                  <div className="text-center py-16 px-4 bg-[#FFF9E6] rounded-3xl border border-[#EED895] shadow-lg space-y-3 text-[#1A2E22]">
+                    <ShoppingBag className="w-12 h-12 text-[#8A6A1C] mx-auto opacity-60" />
+                    <h3 className="font-serif font-bold text-[#1A2E22] text-base">No clothes match your filters</h3>
+                    <p className="text-xs text-[#6B5B30] max-w-sm mx-auto">
                       Try adjusting your search keywords, clearing size restrictions, or switching cities.
                     </p>
                     <div className="pt-2">
                       <button
                         onClick={clearFilters}
-                        className="bg-[#234C3A] text-white px-4 py-2 rounded-xl text-xs font-bold"
+                        className="bg-[#183E2A] text-[#FDE68A] px-5 py-2.5 rounded-xl text-xs font-bold border border-[#D4AF37]/50"
                       >
                         Reset All Filters
                       </button>
@@ -874,59 +869,59 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                     {filteredListings.map((item) => (
                       <div
                         key={item.id}
-                        className="group bg-white rounded-2xl border border-[#E6E6DC] overflow-hidden shadow-xs hover:shadow-md transition flex flex-col justify-between"
+                        className="group bg-[#FFF9E6] rounded-2xl border border-[#EED895] overflow-hidden shadow-[0_10px_25px_-5px_rgba(0,0,0,0.35)] hover:shadow-2xl hover:border-[#D4AF37] transition flex flex-col justify-between text-[#1A2E22]"
                       >
                         <div
                           onClick={() => onSelectItem(item)}
-                          className="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer"
+                          className="relative aspect-[3/4] bg-[#FEF4D5] overflow-hidden cursor-pointer"
                         >
                           <img
                             src={item.imageUrl}
                             alt={item.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
-                          <div className="absolute top-2.5 left-2.5 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded font-bold backdrop-blur-xs">
+                          <div className="absolute top-2.5 left-2.5 bg-black/60 text-[#FDE68A] text-[10px] px-2 py-0.5 rounded font-bold backdrop-blur-xs">
                             Size: {item.size}
                           </div>
-                          <div className="absolute bottom-2.5 right-2.5 bg-[#234C3A] text-white text-[10px] px-2 py-0.5 rounded font-bold shadow-xs flex items-center gap-0.5">
-                            <MapPin className="w-2.5 h-2.5" />
+                          <div className="absolute bottom-2.5 right-2.5 bg-[#183E2A] text-[#FDE68A] text-[10px] px-2 py-0.5 rounded font-bold shadow-xs flex items-center gap-0.5 border border-[#D4AF37]/30">
+                            <MapPin className="w-2.5 h-2.5 text-[#FDE68A]" />
                             {item.city}
                           </div>
                         </div>
 
                         <div className="p-4 space-y-3">
                           <div>
-                            <div className="flex items-center justify-between text-[11px] text-[#5E6B63]">
-                              <span className="font-bold text-[#234C3A] uppercase">{item.brand}</span>
+                            <div className="flex items-center justify-between text-[11px] text-[#6B5B30]">
+                              <span className="font-bold text-[#8A6A1C] uppercase">{item.brand}</span>
                               <span>{item.condition}</span>
                             </div>
                             <h3
                               onClick={() => onSelectItem(item)}
-                              className="font-serif font-bold text-sm text-[#1F2421] truncate mt-0.5 cursor-pointer hover:text-[#234C3A] transition"
+                              className="font-serif font-bold text-sm text-[#1A2E22] truncate mt-0.5 cursor-pointer hover:text-[#8A6A1C] transition"
                             >
                               {item.title}
                             </h3>
                           </div>
 
-                          <div className="flex items-center justify-between text-xs text-[#5E6B63] pt-1 border-t border-stone-100">
-                            <span className="font-bold text-[#1F2421]">≈ ₹{item.estimatedValue} Swap Value</span>
-                            <span className="text-[11px] text-stone-400">By {item.userName}</span>
+                          <div className="flex items-center justify-between text-xs text-[#6B5B30] pt-1 border-t border-[#EED895]/60">
+                            <span className="font-bold text-[#1A2E22]">≈ ₹{item.estimatedValue} Swap Value</span>
+                            <span className="text-[11px] text-[#8C7A58]">By {item.userName}</span>
                           </div>
 
                           {/* Actions */}
-                          <div className="flex items-center gap-2 pt-1 border-t border-stone-100">
+                          <div className="flex items-center gap-2 pt-1 border-t border-[#EED895]/60">
                             <button
                               onClick={() => onSelectItem(item)}
-                              className="flex-1 py-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold transition"
+                              className="flex-1 py-2 rounded-xl bg-[#FEF4D5] hover:bg-[#FCEFC7] text-[#1A2E22] text-xs font-semibold transition border border-[#EED895]"
                             >
                               View Details
                             </button>
                             <button
                               onClick={() => onProposeSwap(item)}
-                              className="flex-1 py-1.5 rounded-lg bg-[#234C3A] hover:bg-[#1A382B] text-white text-xs font-bold transition flex items-center justify-center gap-1 shadow-xs"
+                              className="flex-1 py-2 rounded-xl bg-[#183E2A] hover:bg-[#122A1E] text-[#FDE68A] text-xs font-bold transition flex items-center justify-center gap-1 shadow-md border border-[#D4AF37]/40"
                             >
-                              <ArrowRightLeft className="w-3 h-3 text-[#8CA58A]" />
-                              <span>Request Swap</span>
+                              <ArrowRightLeft className="w-3.5 h-3.5 text-[#FDE68A]" />
+                              <span>Propose Swap</span>
                             </button>
                           </div>
                         </div>
@@ -943,21 +938,21 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
         {activeTab === 'requests' && (
           <div className="space-y-6">
             <div>
-              <h1 className="text-2xl font-serif font-bold text-[#1F2421]">Swap Requests Sent</h1>
-              <p className="text-xs text-[#5E6B63]">Track the barter requests you have submitted to other garment owners</p>
+              <h1 className="text-2xl font-serif font-bold text-[#FDE68A]">Swap Requests Sent</h1>
+              <p className="text-xs text-[#E5D7B3]">Track status of clothing swap proposals you dispatched to other wardrobers</p>
             </div>
 
             {outgoingRequests.length === 0 ? (
-              <div className="text-center py-16 px-4 bg-white rounded-3xl border border-dashed border-[#DCDCD0] space-y-3">
-                <ArrowRightLeft className="w-12 h-12 text-stone-300 mx-auto" />
-                <h3 className="font-serif font-bold text-stone-800 text-base">No swap requests sent yet</h3>
-                <p className="text-xs text-stone-500 max-w-sm mx-auto">
-                  Browse clothes, pick an item you love, and propose an exchange offering one of your own garments.
+              <div className="text-center py-16 px-4 bg-[#FFF9E6] rounded-3xl border border-[#EED895] shadow-lg space-y-3 text-[#1A2E22]">
+                <ArrowRightLeft className="w-12 h-12 text-[#8A6A1C] mx-auto opacity-60" />
+                <h3 className="font-serif font-bold text-[#1A2E22] text-base">You haven't sent any swap proposals yet</h3>
+                <p className="text-xs text-[#6B5B30] max-w-sm mx-auto">
+                  Browse clothes from other members and propose an item from your wardrobe to swap!
                 </p>
                 <div className="pt-2">
                   <button
                     onClick={() => setTab('browse')}
-                    className="bg-[#234C3A] text-white px-4 py-2 rounded-xl text-xs font-bold"
+                    className="bg-[#183E2A] text-[#FDE68A] px-5 py-2.5 rounded-xl text-xs font-bold border border-[#D4AF37]/50"
                   >
                     Browse Clothes Now
                   </button>
@@ -968,24 +963,24 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                 {outgoingRequests.map((s) => (
                   <div
                     key={s.id}
-                    className="bg-white rounded-3xl p-5 sm:p-6 border border-[#E6E6DC] shadow-xs space-y-4"
+                    className="bg-[#FFF9E6] rounded-3xl p-6 border border-[#EED895] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.35)] space-y-4 text-[#1A2E22]"
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-stone-100 gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#EED895]/60 gap-2">
                       <div>
-                        <span className="font-bold text-stone-900 text-xs sm:text-sm">Owner: {s.ownerName}</span>
-                        <span className="text-[11px] text-stone-400 block">{s.ownerCity} · Sent on {new Date(s.createdAt).toLocaleDateString()}</span>
+                        <span className="font-bold text-[#1A2E22] text-xs sm:text-sm">Owner: {s.ownerName}</span>
+                        <span className="text-[11px] text-[#7A6430] block">{s.ownerCity} · Sent on {new Date(s.createdAt).toLocaleDateString()}</span>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <span
-                          className={`text-xs font-bold px-2.5 py-1 rounded-full capitalize ${
+                          className={`text-xs font-bold px-3 py-1 rounded-full capitalize ${
                             s.status === 'pending'
-                              ? 'bg-amber-100 text-amber-800'
+                              ? 'bg-[#FDF3D6] text-[#8A6A1C] border border-[#EED895]'
                               : s.status === 'accepted'
-                              ? 'bg-emerald-100 text-emerald-800'
+                              ? 'bg-[#183E2A] text-[#FDE68A] border border-[#D4AF37]/50'
                               : s.status === 'completed'
-                              ? 'bg-blue-100 text-blue-800'
-                              : 'bg-stone-100 text-stone-600'
+                              ? 'bg-blue-900/10 text-blue-900 border border-blue-200'
+                              : 'bg-stone-200 text-stone-700'
                           }`}
                         >
                           Status: {s.status}
@@ -995,8 +990,8 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* You Requested */}
-                      <div className="p-3.5 bg-stone-50 rounded-2xl border border-stone-200 flex items-center gap-3">
-                        <div className="w-14 h-14 rounded-xl bg-white overflow-hidden shrink-0 border border-stone-200">
+                      <div className="p-3.5 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] flex items-center gap-3">
+                        <div className="w-14 h-14 rounded-xl bg-white overflow-hidden shrink-0 border border-[#E8D494]">
                           <img
                             src={s.requestedItemImage || s.targetItemImage}
                             alt="Requested"
@@ -1004,15 +999,15 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                           />
                         </div>
                         <div className="text-xs space-y-0.5">
-                          <span className="text-[10px] uppercase font-bold text-stone-400 block">You Requested:</span>
-                          <h4 className="font-bold text-stone-900">{s.requestedItemTitle || s.targetItemTitle}</h4>
-                          <span className="text-stone-500">Value ≈ ₹{s.requestedItemValue || s.requestedItemPrice || s.targetItemValue || 1000}</span>
+                          <span className="text-[10px] uppercase font-bold text-[#7A6430] block">You Requested:</span>
+                          <h4 className="font-bold text-[#1A2E22]">{s.requestedItemTitle || s.targetItemTitle}</h4>
+                          <span className="text-[#6B5B30]">Value ≈ ₹{s.requestedItemValue || s.requestedItemPrice || s.targetItemValue || 1000}</span>
                         </div>
                       </div>
 
                       {/* You Offered */}
-                      <div className="p-3.5 bg-emerald-50/70 rounded-2xl border border-emerald-200 flex items-center gap-3">
-                        <div className="w-14 h-14 rounded-xl bg-white overflow-hidden shrink-0 border border-emerald-200">
+                      <div className="p-3.5 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] flex items-center gap-3">
+                        <div className="w-14 h-14 rounded-xl bg-white overflow-hidden shrink-0 border border-[#E8D494]">
                           <img
                             src={s.offeredItemImage}
                             alt="Offered"
@@ -1020,26 +1015,26 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                           />
                         </div>
                         <div className="text-xs space-y-0.5">
-                          <span className="text-[10px] uppercase font-bold text-emerald-800 block">You Offered:</span>
-                          <h4 className="font-bold text-emerald-950">{s.offeredItemTitle}</h4>
-                          <span className="text-emerald-700">Value ≈ ₹{s.offeredItemValue || s.offeredItemPrice || 1000}</span>
+                          <span className="text-[10px] uppercase font-bold text-[#8A6A1C] block">You Offered:</span>
+                          <h4 className="font-bold text-[#1A2E22]">{s.offeredItemTitle}</h4>
+                          <span className="text-[#6B5B30]">Value ≈ ₹{s.offeredItemValue || s.offeredItemPrice || 1000}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-stone-100">
+                    <div className="flex items-center justify-between pt-2 border-t border-[#EED895]/60">
                       <button
                         onClick={() => onOpenChat(s)}
-                        className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold flex items-center gap-1.5 transition"
+                        className="px-4 py-2 rounded-xl bg-[#183E2A] hover:bg-[#122A1E] text-[#FDE68A] text-xs font-bold flex items-center gap-1.5 transition border border-[#D4AF37]/30"
                       >
-                        <MessageSquare className="w-3.5 h-3.5" />
+                        <MessageSquare className="w-3.5 h-3.5 text-[#FDE68A]" />
                         <span>Chat with {s.ownerName}</span>
                       </button>
 
                       {s.status === 'pending' && (
                         <button
                           onClick={() => handleCancelRequest(s.id)}
-                          className="px-3 py-1.5 rounded-xl border border-rose-200 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition"
+                          className="px-3.5 py-1.5 rounded-xl border border-rose-300 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition"
                         >
                           Cancel Request
                         </button>
@@ -1056,15 +1051,15 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
         {activeTab === 'successful-swaps' && (
           <div className="space-y-6">
             <div>
-              <h1 className="text-2xl font-serif font-bold text-[#1F2421]">Successful Completed Swaps</h1>
-              <p className="text-xs text-[#5E6B63]">Completed exchanges where both parties mutually confirmed receipt with zero cash paid</p>
+              <h1 className="text-2xl font-serif font-bold text-[#FDE68A]">Successful Completed Swaps</h1>
+              <p className="text-xs text-[#E5D7B3]">Completed exchanges where both parties mutually confirmed receipt with zero cash paid</p>
             </div>
 
             {successfulSwaps.length === 0 ? (
-              <div className="text-center py-16 px-4 bg-white rounded-3xl border border-dashed border-[#DCDCD0] space-y-3">
-                <CheckCircle2 className="w-12 h-12 text-stone-300 mx-auto" />
-                <h3 className="font-serif font-bold text-stone-800 text-base">No completed swaps recorded yet</h3>
-                <p className="text-xs text-stone-500 max-w-sm mx-auto">
+              <div className="text-center py-16 px-4 bg-[#FFF9E6] rounded-3xl border border-[#EED895] shadow-lg space-y-3 text-[#1A2E22]">
+                <CheckCircle2 className="w-12 h-12 text-[#8A6A1C] mx-auto opacity-60" />
+                <h3 className="font-serif font-bold text-[#1A2E22] text-base">No completed swaps recorded yet</h3>
+                <p className="text-xs text-[#6B5B30] max-w-sm mx-auto">
                   Once an accepted swap is carried out and both members click "Confirm Receipt", it will be archived here.
                 </p>
               </div>
@@ -1073,45 +1068,45 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                 {successfulSwaps.map((s) => (
                   <div
                     key={s.id}
-                    className="bg-white rounded-3xl p-6 border border-emerald-200 shadow-xs space-y-4"
+                    className="bg-[#FFF9E6] rounded-3xl p-6 border border-[#EED895] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.35)] space-y-4 text-[#1A2E22]"
                   >
-                    <div className="flex items-center justify-between pb-3 border-b border-emerald-100">
+                    <div className="flex items-center justify-between pb-3 border-b border-[#EED895]/60">
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="w-5 h-5 text-emerald-700" />
-                        <span className="font-serif font-bold text-sm text-emerald-950">
+                        <span className="font-serif font-bold text-sm text-[#1A2E22]">
                           Barter Exchange Completed on {new Date(s.updatedAt).toLocaleDateString()}
                         </span>
                       </div>
-                      <span className="text-xs bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-bold">
+                      <span className="text-xs bg-[#183E2A] text-[#FDE68A] px-3 py-1 rounded-full font-bold border border-[#D4AF37]/30">
                         100% Cashless
                       </span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="p-3 bg-stone-50 rounded-2xl flex items-center gap-3">
+                      <div className="p-3 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] flex items-center gap-3">
                         <img src={s.requestedItemImage || s.targetItemImage} alt="Received" className="w-12 h-12 rounded-xl object-cover" />
                         <div>
-                          <span className="text-[10px] text-stone-400 block uppercase font-bold">You Received:</span>
-                          <h4 className="font-bold text-stone-900 text-xs">{s.requestedItemTitle || s.targetItemTitle}</h4>
-                          <span className="text-[11px] text-stone-500">From {s.ownerName} ({s.ownerCity})</span>
+                          <span className="text-[10px] text-[#7A6430] block uppercase font-bold">You Received:</span>
+                          <h4 className="font-bold text-[#1A2E22] text-xs">{s.requestedItemTitle || s.targetItemTitle}</h4>
+                          <span className="text-[11px] text-[#6B5B30]">From {s.ownerName} ({s.ownerCity})</span>
                         </div>
                       </div>
 
-                      <div className="p-3 bg-stone-50 rounded-2xl flex items-center gap-3">
+                      <div className="p-3 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] flex items-center gap-3">
                         <img src={s.offeredItemImage} alt="Given" className="w-12 h-12 rounded-xl object-cover" />
                         <div>
-                          <span className="text-[10px] text-stone-400 block uppercase font-bold">You Traded Away:</span>
-                          <h4 className="font-bold text-stone-900 text-xs">{s.offeredItemTitle}</h4>
-                          <span className="text-[11px] text-stone-500">Given in exchange</span>
+                          <span className="text-[10px] text-[#7A6430] block uppercase font-bold">You Traded Away:</span>
+                          <h4 className="font-bold text-[#1A2E22] text-xs">{s.offeredItemTitle}</h4>
+                          <span className="text-[11px] text-[#6B5B30]">Given in exchange</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-stone-500 pt-1">
+                    <div className="flex items-center justify-between text-xs text-[#6B5B30] pt-1">
                       <span>Environmental Savings: ~2,700 Liters Water & 3.6kg CO2 Saved</span>
                       <button
                         onClick={() => onOpenChat(s)}
-                        className="text-[#234C3A] font-semibold hover:underline flex items-center gap-1"
+                        className="text-[#8A6A1C] font-bold hover:underline flex items-center gap-1"
                       >
                         <MessageSquare className="w-3.5 h-3.5" />
                         <span>View Chat Transcript</span>
@@ -1129,14 +1124,14 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-serif font-bold text-[#1F2421]">Buyer Swap History</h1>
-                <p className="text-xs text-[#5E6B63]">Complete log of all requests sent, active barters, and completed exchanges</p>
+                <h1 className="text-2xl font-serif font-bold text-[#FDE68A]">Buyer Swap History</h1>
+                <p className="text-xs text-[#E5D7B3]">Complete log of all requests sent, active barters, and completed exchanges</p>
               </div>
 
               <select
                 value={requestStatusFilter}
                 onChange={(e) => setRequestStatusFilter(e.target.value)}
-                className="px-3 py-1.5 rounded-xl border border-[#E6E6DC] bg-white text-xs text-stone-800"
+                className="px-3 py-1.5 rounded-xl border border-[#EED895] bg-[#FFF9E6] text-xs text-[#1A2E22] font-semibold"
               >
                 <option value="all">All Statuses</option>
                 <option value="pending">Pending</option>
@@ -1146,13 +1141,13 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
               </select>
             </div>
 
-            <div className="bg-white rounded-3xl border border-[#E6E6DC] overflow-hidden shadow-xs divide-y divide-stone-100">
+            <div className="bg-[#FFF9E6] rounded-3xl border border-[#EED895] overflow-hidden shadow-[0_10px_25px_-5px_rgba(0,0,0,0.35)] divide-y divide-[#EED895]/60 text-[#1A2E22]">
               {outgoingRequests
                 .filter(s => requestStatusFilter === 'all' || s.status === requestStatusFilter)
                 .map((s) => (
                   <div key={s.id} className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-stone-100 overflow-hidden shrink-0 border border-stone-200">
+                      <div className="w-12 h-12 rounded-xl bg-white overflow-hidden shrink-0 border border-[#E8D494]">
                         <img
                           src={s.requestedItemImage || s.targetItemImage}
                           alt="Garment"
@@ -1160,22 +1155,22 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                         />
                       </div>
                       <div>
-                        <h4 className="font-bold text-stone-900">{s.requestedItemTitle || s.targetItemTitle}</h4>
-                        <p className="text-stone-500 text-[11px]">Owner: {s.ownerName} ({s.ownerCity}) · Offered: {s.offeredItemTitle}</p>
-                        <span className="text-[10px] text-stone-400">Date: {new Date(s.createdAt).toLocaleDateString()}</span>
+                        <h4 className="font-bold text-[#1A2E22]">{s.requestedItemTitle || s.targetItemTitle}</h4>
+                        <p className="text-[#6B5B30] text-[11px]">Owner: {s.ownerName} ({s.ownerCity}) · Offered: {s.offeredItemTitle}</p>
+                        <span className="text-[10px] text-[#8C7A58]">Date: {new Date(s.createdAt).toLocaleDateString()}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3">
                       <span
-                        className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full capitalize ${
+                        className={`text-[10px] font-bold px-3 py-1 rounded-full capitalize ${
                           s.status === 'completed'
-                            ? 'bg-blue-100 text-blue-800'
+                            ? 'bg-blue-900/10 text-blue-900 border border-blue-200'
                             : s.status === 'accepted'
-                            ? 'bg-emerald-100 text-emerald-800'
+                            ? 'bg-[#183E2A] text-[#FDE68A] border border-[#D4AF37]/50'
                             : s.status === 'pending'
-                            ? 'bg-amber-100 text-amber-800'
-                            : 'bg-stone-100 text-stone-600'
+                            ? 'bg-[#FDF3D6] text-[#8A6A1C] border border-[#EED895]'
+                            : 'bg-stone-200 text-stone-700'
                         }`}
                       >
                         {s.status}
@@ -1183,7 +1178,7 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
                       <button
                         onClick={() => onOpenChat(s)}
-                        className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 transition"
+                        className="p-2 rounded-xl bg-[#183E2A] hover:bg-[#122A1E] text-[#FDE68A] transition border border-[#D4AF37]/30"
                       >
                         <MessageSquare className="w-4 h-4" />
                       </button>
@@ -1196,15 +1191,15 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
         {/* SUB-PAGE 6: HOW IT WORKS (Buyer Guide) */}
         {activeTab === 'how-it-works' && (
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#E6E6DC] shadow-xs space-y-8">
+          <div className="bg-[#FFF9E6] rounded-3xl p-6 sm:p-10 border border-[#EED895] shadow-[0_12px_35px_rgba(0,0,0,0.3)] space-y-8 text-[#1A2E22]">
             <div className="space-y-2">
-              <span className="text-xs uppercase tracking-wider font-semibold text-[#234C3A]">
+              <span className="text-xs uppercase tracking-wider font-semibold text-[#8A6A1C]">
                 Buyer Barter Handbook
               </span>
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1F2421]">
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1A2E22]">
                 How Buying & Discovering Works on ReWear
               </h1>
-              <p className="text-xs sm:text-sm text-[#5E6B63] max-w-2xl">
+              <p className="text-xs sm:text-sm text-[#6B5B30] max-w-2xl">
                 On ReWear, "buying" means exchanging one of your unused clothes for an item you want. No money changes hands.
               </p>
             </div>
@@ -1221,12 +1216,12 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                 { step: '8', title: 'Receive & Inspect', desc: 'Verify the clothing item matches the photos and description.' },
                 { step: '9', title: 'Confirm Swap', desc: 'Click confirm to complete the zero-cash circular trade!' },
               ].map((s) => (
-                <div key={s.step} className="p-4 bg-[#F8F8F4] rounded-2xl border border-[#E6E6DC] space-y-1.5">
-                  <span className="w-6 h-6 rounded-full bg-[#234C3A] text-white flex items-center justify-center text-xs font-bold">
+                <div key={s.step} className="p-4 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] space-y-1.5">
+                  <span className="w-6 h-6 rounded-full bg-[#183E2A] text-[#FDE68A] flex items-center justify-center text-xs font-bold border border-[#D4AF37]/40">
                     {s.step}
                   </span>
-                  <h4 className="font-serif font-bold text-sm text-[#1F2421] pt-1">{s.title}</h4>
-                  <p className="text-xs text-[#5E6B63] leading-relaxed">{s.desc}</p>
+                  <h4 className="font-serif font-bold text-sm text-[#1A2E22] pt-1">{s.title}</h4>
+                  <p className="text-xs text-[#6B5B30] leading-relaxed">{s.desc}</p>
                 </div>
               ))}
             </div>

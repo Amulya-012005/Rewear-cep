@@ -3,12 +3,9 @@ import {
   X,
   Calculator,
   Sparkles,
-  ArrowRightLeft,
   Info,
-  CheckCircle2,
-  HelpCircle
+  CheckCircle2
 } from 'lucide-react';
-import { api } from '../services/api.ts';
 
 interface ValueCalculatorModalProps {
   onClose: () => void;
@@ -95,37 +92,37 @@ export const ValueCalculatorModal: React.FC<ValueCalculatorModalProps> = ({ onCl
   const ratio = Math.min(val1, val2) / Math.max(val1, val2);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-white rounded-3xl shadow-2xl border border-stone-200 text-stone-800 p-6 sm:p-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in">
+      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-[#FFF9E6] rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#EED895] text-[#1A2E22] p-6 sm:p-8">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-stone-100 mb-6">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-[#234533] text-white flex items-center justify-center">
-              <Calculator className="w-5 h-5 text-[#8CE2A8]" />
+        <div className="flex items-center justify-between pb-4 border-b border-[#EED895]/60 mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#183E2A] text-[#FDE68A] flex items-center justify-center border border-[#D4AF37]/40 shadow-sm">
+              <Calculator className="w-5 h-5 text-[#FDE68A]" />
             </div>
             <div>
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#1E3627]">
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#1A2E22]">
                 Swap Value Parity Calculator
               </h3>
-              <p className="text-xs text-stone-500">
+              <p className="text-xs text-[#6B5B30]">
                 Transparent reference values based on fabric grade, brand tier & condition. Zero cash involved.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center transition"
+            className="w-9 h-9 rounded-full bg-[#FEF4D5] hover:bg-[#FCEFC7] flex items-center justify-center transition border border-[#E8D494] text-[#8A6A1C]"
           >
-            <X className="w-4 h-4 text-stone-600" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Tab switcher */}
-        <div className="flex rounded-xl bg-[#F4EFE6] p-1 text-xs font-semibold mb-6">
+        <div className="flex rounded-xl bg-[#FEF4D5] p-1 text-xs font-bold mb-6 border border-[#E8D494]">
           <button
             onClick={() => setActiveTab('compare')}
             className={`flex-1 py-2 rounded-lg transition ${
-              activeTab === 'compare' ? 'bg-[#234533] text-white shadow' : 'text-stone-600'
+              activeTab === 'compare' ? 'bg-[#183E2A] text-[#FDE68A] shadow-sm' : 'text-[#6B5B30] hover:text-[#1A2E22]'
             }`}
           >
             Compare 2 Items for Fair Barter
@@ -133,7 +130,7 @@ export const ValueCalculatorModal: React.FC<ValueCalculatorModalProps> = ({ onCl
           <button
             onClick={() => setActiveTab('single')}
             className={`flex-1 py-2 rounded-lg transition ${
-              activeTab === 'single' ? 'bg-[#234533] text-white shadow' : 'text-stone-600'
+              activeTab === 'single' ? 'bg-[#183E2A] text-[#FDE68A] shadow-sm' : 'text-[#6B5B30] hover:text-[#1A2E22]'
             }`}
           >
             Estimate Single Garment Value
@@ -145,94 +142,94 @@ export const ValueCalculatorModal: React.FC<ValueCalculatorModalProps> = ({ onCl
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Item A */}
-              <div className="p-4 bg-[#FAF8F4] rounded-2xl border border-[#E9E3D5] space-y-3">
-                <span className="text-[11px] font-bold text-[#234533] uppercase tracking-wider block">
+              <div className="p-4 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] space-y-3">
+                <span className="text-[11px] font-bold text-[#8A6A1C] uppercase tracking-wider block">
                   Garment A (e.g. Your Item)
                 </span>
 
                 <div>
-                  <label className="text-[10px] font-bold text-stone-500 uppercase">Category</label>
+                  <label className="text-[10px] font-bold text-[#6B5B30] uppercase">Category</label>
                   <select
                     value={cat1}
                     onChange={(e) => setCat1(e.target.value)}
-                    className="w-full mt-0.5 p-2 rounded-lg border border-stone-300 text-xs bg-white"
+                    className="w-full mt-0.5 p-2 rounded-xl border border-[#EED895] text-xs bg-[#FFFDF5] text-[#1A2E22] font-semibold"
                   >
                     {categories.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-stone-500 uppercase">Brand Tier</label>
+                  <label className="text-[10px] font-bold text-[#6B5B30] uppercase">Brand Tier</label>
                   <select
                     value={tier1}
                     onChange={(e) => setTier1(e.target.value)}
-                    className="w-full mt-0.5 p-2 rounded-lg border border-stone-300 text-xs bg-white"
+                    className="w-full mt-0.5 p-2 rounded-xl border border-[#EED895] text-xs bg-[#FFFDF5] text-[#1A2E22] font-semibold"
                   >
                     {brandTiers.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-stone-500 uppercase">Condition</label>
+                  <label className="text-[10px] font-bold text-[#6B5B30] uppercase">Condition</label>
                   <select
                     value={cond1}
                     onChange={(e) => setCond1(e.target.value)}
-                    className="w-full mt-0.5 p-2 rounded-lg border border-stone-300 text-xs bg-white"
+                    className="w-full mt-0.5 p-2 rounded-xl border border-[#EED895] text-xs bg-[#FFFDF5] text-[#1A2E22] font-semibold"
                   >
                     {conditions.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
 
-                <div className="pt-2 border-t border-stone-200 flex items-center justify-between">
-                  <span className="text-xs font-semibold text-stone-600">Calculated Parity:</span>
-                  <span className="text-sm font-bold text-[#234533] bg-[#EBF3ED] px-2.5 py-0.5 rounded border border-[#C6DFC9]">
+                <div className="pt-2 border-t border-[#E8D494] flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#6B5B30]">Calculated Parity:</span>
+                  <span className="text-sm font-bold text-[#FDE68A] bg-[#183E2A] px-2.5 py-0.5 rounded-lg border border-[#D4AF37]/40">
                     ≈ ₹{val1}
                   </span>
                 </div>
               </div>
 
               {/* Item B */}
-              <div className="p-4 bg-[#FAF8F4] rounded-2xl border border-[#E9E3D5] space-y-3">
-                <span className="text-[11px] font-bold text-[#234533] uppercase tracking-wider block">
+              <div className="p-4 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] space-y-3">
+                <span className="text-[11px] font-bold text-[#8A6A1C] uppercase tracking-wider block">
                   Garment B (e.g. Other Person's Item)
                 </span>
 
                 <div>
-                  <label className="text-[10px] font-bold text-stone-500 uppercase">Category</label>
+                  <label className="text-[10px] font-bold text-[#6B5B30] uppercase">Category</label>
                   <select
                     value={cat2}
                     onChange={(e) => setCat2(e.target.value)}
-                    className="w-full mt-0.5 p-2 rounded-lg border border-stone-300 text-xs bg-white"
+                    className="w-full mt-0.5 p-2 rounded-xl border border-[#EED895] text-xs bg-[#FFFDF5] text-[#1A2E22] font-semibold"
                   >
                     {categories.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-stone-500 uppercase">Brand Tier</label>
+                  <label className="text-[10px] font-bold text-[#6B5B30] uppercase">Brand Tier</label>
                   <select
                     value={tier2}
                     onChange={(e) => setTier2(e.target.value)}
-                    className="w-full mt-0.5 p-2 rounded-lg border border-stone-300 text-xs bg-white"
+                    className="w-full mt-0.5 p-2 rounded-xl border border-[#EED895] text-xs bg-[#FFFDF5] text-[#1A2E22] font-semibold"
                   >
                     {brandTiers.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-stone-500 uppercase">Condition</label>
+                  <label className="text-[10px] font-bold text-[#6B5B30] uppercase">Condition</label>
                   <select
                     value={cond2}
                     onChange={(e) => setCond2(e.target.value)}
-                    className="w-full mt-0.5 p-2 rounded-lg border border-stone-300 text-xs bg-white"
+                    className="w-full mt-0.5 p-2 rounded-xl border border-[#EED895] text-xs bg-[#FFFDF5] text-[#1A2E22] font-semibold"
                   >
                     {conditions.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
 
-                <div className="pt-2 border-t border-stone-200 flex items-center justify-between">
-                  <span className="text-xs font-semibold text-stone-600">Calculated Parity:</span>
-                  <span className="text-sm font-bold text-[#234533] bg-[#EBF3ED] px-2.5 py-0.5 rounded border border-[#C6DFC9]">
+                <div className="pt-2 border-t border-[#E8D494] flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#6B5B30]">Calculated Parity:</span>
+                  <span className="text-sm font-bold text-[#FDE68A] bg-[#183E2A] px-2.5 py-0.5 rounded-lg border border-[#D4AF37]/40">
                     ≈ ₹{val2}
                   </span>
                 </div>
@@ -240,24 +237,24 @@ export const ValueCalculatorModal: React.FC<ValueCalculatorModalProps> = ({ onCl
             </div>
 
             {/* Parity Evaluation Outcome */}
-            <div className="p-4 bg-[#F2EDE2] rounded-2xl border border-[#DED4C1] space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold text-stone-900">
-                <span className="flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-[#2C573F]" />
+            <div className="p-4 bg-[#FEF6DB] rounded-2xl border border-[#E8D494] space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold text-[#1A2E22]">
+                <span className="flex items-center gap-1.5 text-[#8A6A1C]">
+                  <Sparkles className="w-4 h-4 text-[#8A6A1C]" />
                   Barter Parity Assessment
                 </span>
-                <span>Difference: ₹{difference}</span>
+                <span className="text-[#6B5B30]">Difference: ₹{difference}</span>
               </div>
 
-              <div className="text-xs text-stone-700 leading-relaxed">
+              <div className="text-xs text-[#1A2E22] leading-relaxed">
                 {ratio >= 0.85 ? (
-                  <p className="text-emerald-800 font-semibold flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <p className="text-emerald-800 font-bold flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
                     Optimal 1-to-1 Match! Both garments share high parity and represent an equitable direct trade.
                   </p>
                 ) : (
-                  <p className="text-amber-800 font-medium flex items-center gap-1.5">
-                    <Info className="w-4 h-4 text-amber-600 shrink-0" />
+                  <p className="text-amber-900 font-semibold flex items-center gap-1.5">
+                    <Info className="w-4 h-4 text-amber-700 shrink-0" />
                     Moderate Parity Gap (≈ ₹{difference}). While values differ, swappers often agree if styles align well.
                   </p>
                 )}
@@ -271,56 +268,56 @@ export const ValueCalculatorModal: React.FC<ValueCalculatorModalProps> = ({ onCl
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-bold text-stone-700 uppercase">Clothing Category</label>
+                <label className="text-xs font-bold text-[#6B5B30] uppercase">Clothing Category</label>
                 <select
                   value={cat1}
                   onChange={(e) => setCat1(e.target.value)}
-                  className="w-full mt-1 p-2.5 rounded-xl border border-stone-300 text-sm bg-white"
+                  className="w-full mt-1 p-2.5 rounded-xl border border-[#EED895] text-sm bg-[#FFFDF5] text-[#1A2E22] font-semibold"
                 >
                   {categories.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-stone-700 uppercase">Brand Tier</label>
+                <label className="text-xs font-bold text-[#6B5B30] uppercase">Brand Tier</label>
                 <select
                   value={tier1}
                   onChange={(e) => setTier1(e.target.value)}
-                  className="w-full mt-1 p-2.5 rounded-xl border border-stone-300 text-sm bg-white"
+                  className="w-full mt-1 p-2.5 rounded-xl border border-[#EED895] text-sm bg-[#FFFDF5] text-[#1A2E22] font-semibold"
                 >
                   {brandTiers.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
                 </select>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-stone-700 uppercase">Condition</label>
+                <label className="text-xs font-bold text-[#6B5B30] uppercase">Condition</label>
                 <select
                   value={cond1}
                   onChange={(e) => setCond1(e.target.value)}
-                  className="w-full mt-1 p-2.5 rounded-xl border border-stone-300 text-sm bg-white"
+                  className="w-full mt-1 p-2.5 rounded-xl border border-[#EED895] text-sm bg-[#FFFDF5] text-[#1A2E22] font-semibold"
                 >
                   {conditions.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-stone-700 uppercase">Approx. Original Price (Optional ₹)</label>
+                <label className="text-xs font-bold text-[#6B5B30] uppercase">Approx. Original Price (Optional ₹)</label>
                 <input
                   type="number"
                   placeholder="e.g. 2500"
                   value={origPrice1}
                   onChange={(e) => setOrigPrice1(e.target.value ? Number(e.target.value) : '')}
-                  className="w-full mt-1 p-2.5 rounded-xl border border-stone-300 text-sm bg-white"
+                  className="w-full mt-1 p-2.5 rounded-xl border border-[#EED895] text-sm bg-[#FFFDF5] text-[#1A2E22] font-semibold"
                 />
               </div>
             </div>
 
-            <div className="p-6 bg-[#FAF8F4] rounded-2xl border border-[#E7DFD1] text-center space-y-2 mt-4">
-              <span className="text-xs text-stone-500 uppercase font-semibold">Recommended Swap Reference</span>
-              <div className="text-3xl sm:text-4xl font-serif font-bold text-[#1E3B2C]">
+            <div className="p-6 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] text-center space-y-2 mt-4">
+              <span className="text-xs text-[#7A6430] uppercase font-bold">Recommended Swap Reference</span>
+              <div className="text-3xl sm:text-4xl font-serif font-bold text-[#1A2E22]">
                 ≈ ₹{val1.toLocaleString()}
               </div>
-              <p className="text-xs text-stone-500 max-w-md mx-auto">
+              <p className="text-xs text-[#6B5B30] max-w-md mx-auto">
                 Use this estimated value when listing your garment on ReWear. It helps potential swappers identify fair barter exchange opportunities.
               </p>
             </div>
@@ -328,8 +325,8 @@ export const ValueCalculatorModal: React.FC<ValueCalculatorModalProps> = ({ onCl
         )}
 
         {/* Disclaimer Note */}
-        <div className="mt-6 pt-4 border-t border-stone-200 text-[11px] text-stone-500 flex items-start gap-2">
-          <Info className="w-4 h-4 text-stone-400 shrink-0 mt-0.5" />
+        <div className="mt-6 pt-4 border-t border-[#EED895]/60 text-[11px] text-[#6B5B30] flex items-start gap-2">
+          <Info className="w-4 h-4 text-[#8A6A1C] shrink-0 mt-0.5" />
           <span>
             <strong>Note for Swappers:</strong> ReWear is completely cashless. All reference values are calculated strictly for qualitative barter alignment and zero currency will be requested or accepted on this platform.
           </span>

@@ -48,15 +48,15 @@ export const AnimatedBackground: React.FC = () => {
     }
 
     const colors = [
-      'rgba(52, 211, 153, ', // radiant emerald
-      'rgba(16, 185, 129, ', // vivid green
-      'rgba(110, 231, 183, ', // mint glow
-      'rgba(46, 125, 90, ', // deep emerald
-      'rgba(167, 243, 208, ' // ethereal pale vapor
+      'rgba(245, 215, 127, ', // radiant light gold
+      'rgba(251, 191, 36, ',  // warm shimmering amber
+      'rgba(52, 211, 153, ',  // luminous emerald
+      'rgba(110, 231, 183, ', // bright mint spark
+      'rgba(254, 240, 138, '  // ethereal light golden vapor
     ];
 
-    // Generate billowing ink nodes
-    const nodeCount = 55;
+    // Generate billowing ink plumes with brighter illumination
+    const nodeCount = 65;
     const nodes: InkNode[] = [];
     for (let i = 0; i < nodeCount; i++) {
       const baseX = Math.random() * width;
@@ -64,30 +64,30 @@ export const AnimatedBackground: React.FC = () => {
         x: baseX,
         y: height + Math.random() * 200,
         baseX,
-        radius: 35 + Math.random() * 85,
-        maxRadius: 100 + Math.random() * 120,
-        speedY: 0.35 + Math.random() * 0.75,
-        speedX: (Math.random() - 0.5) * 0.4,
-        opacity: 0.08 + Math.random() * 0.18,
+        radius: 40 + Math.random() * 95,
+        maxRadius: 110 + Math.random() * 140,
+        speedY: 0.4 + Math.random() * 0.85,
+        speedX: (Math.random() - 0.5) * 0.45,
+        opacity: 0.12 + Math.random() * 0.22,
         color: colors[Math.floor(Math.random() * colors.length)],
         phase: Math.random() * Math.PI * 2,
-        phaseSpeed: 0.008 + Math.random() * 0.015,
-        swirlRadius: 20 + Math.random() * 50
+        phaseSpeed: 0.009 + Math.random() * 0.018,
+        swirlRadius: 25 + Math.random() * 60
       });
     }
 
-    // Generate luminous suspended micro-droplets / dust motes
-    const dropletCount = 60;
+    // Generate luminous suspended micro-droplets and sparkling golden stars
+    const dropletCount = 85;
     const droplets: FloatingDroplet[] = [];
     for (let i = 0; i < dropletCount; i++) {
       droplets.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: 0.8 + Math.random() * 2.2,
-        speedY: -(0.2 + Math.random() * 0.5),
-        speedX: (Math.random() - 0.5) * 0.3,
-        opacity: 0.2 + Math.random() * 0.6,
-        pulseSpeed: 0.02 + Math.random() * 0.03,
+        radius: 1.0 + Math.random() * 2.8,
+        speedY: -(0.25 + Math.random() * 0.65),
+        speedX: (Math.random() - 0.5) * 0.35,
+        opacity: 0.35 + Math.random() * 0.65,
+        pulseSpeed: 0.025 + Math.random() * 0.045,
         pulsePhase: Math.random() * Math.PI * 2
       });
     }
@@ -95,21 +95,33 @@ export const AnimatedBackground: React.FC = () => {
     let time = 0;
 
     const render = () => {
-      time += 0.01;
+      time += 0.012;
 
-      // Dark background with slight trail fade for fluid smoke blending
-      ctx.fillStyle = '#060E0A';
+      // Deep dark emerald base
+      ctx.fillStyle = '#050D09';
       ctx.fillRect(0, 0, width, height);
 
-      // Deep radial base glow
+      // Shinier, brighter golden-emerald radial ambient light
       const bgGrad = ctx.createRadialGradient(
-        width * 0.5, height * 0.85, 50,
-        width * 0.5, height * 0.85, width * 0.75
+        width * 0.5, height * 0.75, 40,
+        width * 0.5, height * 0.75, width * 0.85
       );
-      bgGrad.addColorStop(0, 'rgba(16, 185, 129, 0.16)');
-      bgGrad.addColorStop(0.5, 'rgba(6, 78, 59, 0.10)');
-      bgGrad.addColorStop(1, 'rgba(6, 14, 10, 0)');
+      bgGrad.addColorStop(0, 'rgba(212, 175, 55, 0.22)');
+      bgGrad.addColorStop(0.35, 'rgba(52, 211, 153, 0.18)');
+      bgGrad.addColorStop(0.7, 'rgba(16, 78, 50, 0.12)');
+      bgGrad.addColorStop(1, 'rgba(5, 13, 9, 0)');
       ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      // Upper shimmering golden aura
+      const topGrad = ctx.createRadialGradient(
+        width * 0.7, height * 0.2, 20,
+        width * 0.7, height * 0.2, width * 0.5
+      );
+      topGrad.addColorStop(0, 'rgba(253, 230, 138, 0.15)');
+      topGrad.addColorStop(0.5, 'rgba(16, 185, 129, 0.08)');
+      topGrad.addColorStop(1, 'rgba(5, 13, 9, 0)');
+      ctx.fillStyle = topGrad;
       ctx.fillRect(0, 0, width, height);
 
       // Draw and update billowing ink plumes
@@ -120,16 +132,16 @@ export const AnimatedBackground: React.FC = () => {
         n.x = n.baseX + Math.sin(n.phase) * n.swirlRadius;
 
         // Radius expands as it billows upward
-        const currentRadius = n.radius + Math.sin(n.phase * 0.5) * 15;
+        const currentRadius = n.radius + Math.sin(n.phase * 0.5) * 18;
 
-        // Radial plume gradient simulating volumetric liquid ink
+        // Radial plume gradient simulating volumetric liquid ink with luminous luster
         const grad = ctx.createRadialGradient(
           n.x, n.y, 0,
           n.x, n.y, currentRadius
         );
-        grad.addColorStop(0, `${n.color}${n.opacity * 1.5})`);
-        grad.addColorStop(0.4, `${n.color}${n.opacity * 0.8})`);
-        grad.addColorStop(0.8, `${n.color}${n.opacity * 0.2})`);
+        grad.addColorStop(0, `${n.color}${n.opacity * 1.8})`);
+        grad.addColorStop(0.35, `${n.color}${n.opacity * 1.1})`);
+        grad.addColorStop(0.75, `${n.color}${n.opacity * 0.3})`);
         grad.addColorStop(1, `${n.color}0)`);
 
         ctx.beginPath();
@@ -145,20 +157,26 @@ export const AnimatedBackground: React.FC = () => {
         }
       }
 
-      // Draw floating luminous micro-droplets
+      // Draw floating luminous micro-droplets & sparkling stars
       for (let j = 0; j < droplets.length; j++) {
         const d = droplets[j];
         d.y += d.speedY;
-        d.x += d.speedX + Math.sin(time + j) * 0.2;
+        d.x += d.speedX + Math.sin(time * 2 + j) * 0.35;
         d.pulsePhase += d.pulseSpeed;
 
-        const currentOpacity = Math.max(0.1, d.opacity + Math.sin(d.pulsePhase) * 0.3);
+        const currentOpacity = Math.max(0.18, d.opacity + Math.sin(d.pulsePhase) * 0.4);
 
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(167, 243, 208, ${currentOpacity})`;
-        ctx.shadowColor = '#34D399';
-        ctx.shadowBlur = 6;
+        // Alternate between shimmering gold and mint sparkles
+        if (j % 2 === 0) {
+          ctx.fillStyle = `rgba(253, 230, 138, ${currentOpacity})`;
+          ctx.shadowColor = '#FDE68A';
+        } else {
+          ctx.fillStyle = `rgba(167, 243, 208, ${currentOpacity})`;
+          ctx.shadowColor = '#6EE7B7';
+        }
+        ctx.shadowBlur = 9;
         ctx.fill();
         ctx.shadowBlur = 0; // reset
 

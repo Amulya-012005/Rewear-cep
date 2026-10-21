@@ -161,13 +161,18 @@ export const api = {
     requestedItemId: string;
     offeredItemId: string;
     message?: string;
+    proposalMessage?: string;
     handoverMethod?: string;
     pickupLocation?: string;
     approxDeliveryDate?: string;
   }) {
+    const bodyPayload = {
+      ...payload,
+      message: payload.message || payload.proposalMessage
+    };
     return this.request<{ swap: SwapRequest }>('/api/swaps', {
       method: 'POST',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(bodyPayload)
     });
   },
 
@@ -239,10 +244,14 @@ export const api = {
   },
 
   // Calculator
-  async estimateSwapValue(payload: { category: string; brandTier: string; condition: string; originalPrice?: number }) {
+  async estimateSwapValue(payload: { category: string; brandTier?: string; brand?: string; condition: string; originalPrice?: number; ageInMonths?: number }) {
     return this.request<{ estimatedValue: number; explanation: string }>('/api/calculator/estimate', {
       method: 'POST',
       body: JSON.stringify(payload)
     });
+  },
+
+  async calculateSwapValue(payload: { category: string; brandTier?: string; brand?: string; condition: string; originalPrice?: number; ageInMonths?: number }) {
+    return this.estimateSwapValue(payload);
   }
 };

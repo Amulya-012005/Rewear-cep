@@ -233,16 +233,16 @@ function ReWearApp() {
       {/* Top Notification Toast */}
       {toastMessage && (
         <div
-          className={`fixed top-4 right-4 z-50 px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2 text-xs font-semibold animate-in slide-in-from-top-3 border ${
+          className={`fixed top-4 right-4 z-50 px-4 py-3 rounded-2xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.35)] flex items-center gap-2 text-xs font-bold animate-in slide-in-from-top-3 border ${
             toastMessage.type === 'success'
-              ? 'bg-[#153424] text-white border-[#2E6B4B]'
-              : 'bg-rose-700 text-white border-rose-500'
+              ? 'bg-[#FFF9E6] text-[#1A2E22] border-[#EED895]'
+              : 'bg-[#FFF9E6] text-rose-900 border-rose-300'
           }`}
         >
           {toastMessage.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 text-[#8CE2A8]" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-700" />
           ) : (
-            <AlertCircle className="w-4 h-4 text-rose-200" />
+            <AlertCircle className="w-4 h-4 text-rose-600" />
           )}
           <span>{toastMessage.text}</span>
         </div>

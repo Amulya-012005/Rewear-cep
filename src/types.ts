@@ -87,6 +87,7 @@ export interface ClothingListing {
   genderFit?: string;
   colour?: string;
   fabric?: string;
+  material?: string;
   condition: ClothingCondition;
   city: string;
   state?: string;

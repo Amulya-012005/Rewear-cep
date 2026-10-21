@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ClothingListing, ClothingCategory, ClothingCondition, ClothingSize } from '../types.ts';
 import { useAuth } from '../context/AuthContext.tsx';
 import {
   X,
   Upload,
-  Image as ImageIcon,
   Sparkles,
-  MapPin,
   CheckCircle2,
   AlertCircle,
-  HelpCircle,
   Calculator
 } from 'lucide-react';
 import { api } from '../services/api.ts';
@@ -74,47 +71,37 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
     'XS', 'S', 'M', 'L', 'XL', 'XXL', '28', '30', '32', '34', '36', 'Free Size'
   ];
 
-  const cities = ['Hubballi', 'Bengaluru', 'Mysuru', 'Pune'];
-
   // Smart Value Estimator Helper
   const handleAutoEstimate = async () => {
     try {
-      const res = await api.estimateSwapValue({
+      const res = await api.calculateSwapValue({
         category,
-        brandTier: 'fast_fashion',
-        condition
+        brand: brand || 'FabIndia',
+        condition,
+        originalPrice: 2500,
+        ageInMonths: 6
       });
-      setEstimatedValue(res.estimatedValue);
+      if (res && res.estimatedValue) {
+        setEstimatedValue(res.estimatedValue);
+      }
     } catch {
-      // Fallback local calc
+      // Fallback estimate
       setEstimatedValue(1500);
     }
   };
 
-  // Handle local file upload via FileReader (converts to data URL persistently stored in backend db)
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith('image/')) {
-      setError('Please select an image file (JPEG, PNG, WEBP).');
-      return;
-    }
-
-    if (file.size > 8 * 1024 * 1024) {
-      setError('Image file is larger than 8MB. Please choose a smaller photo.');
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image must be under 5MB.');
       return;
     }
 
     const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        setImageUrl(reader.result);
-        setError(null);
-      }
-    };
-    reader.onerror = () => {
-      setError('Failed to read image file.');
+    reader.onloadend = () => {
+      setImageUrl(reader.result as string);
     };
     reader.readAsDataURL(file);
   };
@@ -166,28 +153,28 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-[#FAF7F0] rounded-3xl shadow-2xl border border-[#E5DFD4] text-stone-800 p-6 sm:p-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in">
+      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-[#FFF9E6] rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#EED895] text-[#1A2E22] p-6 sm:p-8">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-stone-100 mb-6">
+        <div className="flex items-center justify-between pb-4 border-b border-[#EED895]/60 mb-6">
           <div>
-            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#1E3627]">
+            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#1A2E22]">
               {itemToEdit ? 'Edit Clothing Listing' : 'List an Item for Barter Swap'}
             </h3>
-            <p className="text-xs text-stone-500 mt-0.5">
+            <p className="text-xs text-[#6B5B30] mt-0.5">
               Upload clothes you no longer wear to swap with someone nearby. No cash payments.
             </p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center transition"
+            className="w-9 h-9 rounded-full bg-[#FEF4D5] hover:bg-[#FCEFC7] flex items-center justify-center transition border border-[#E8D494] text-[#8A6A1C]"
           >
-            <X className="w-4 h-4 text-stone-600" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {error && (
-          <div className="mb-5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+          <div className="mb-5 p-3 rounded-xl bg-rose-100 border border-rose-300 text-rose-800 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
             <span>{error}</span>
           </div>
@@ -196,7 +183,7 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Title */}
           <div>
-            <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-[#6B5B30] uppercase tracking-wider mb-1">
               Garment Title *
             </label>
             <input
@@ -205,20 +192,20 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
               placeholder="e.g. Pure Linen Relaxed Summer Shirt"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#2C573F] text-sm"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#EED895] bg-[#FFFDF5] text-[#1A2E22] focus:outline-none focus:border-[#B89635] text-sm"
             />
           </div>
 
           {/* Category & Brand row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[#6B5B30] uppercase tracking-wider mb-1">
                 Category *
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as ClothingCategory)}
-                className="w-full px-3 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#2C573F] text-sm bg-white"
+                className="w-full px-3 py-2.5 rounded-xl border border-[#EED895] bg-[#FFFDF5] text-[#1A2E22] font-semibold focus:outline-none focus:border-[#B89635] text-sm cursor-pointer"
               >
                 {categories.map((c) => (
                   <option key={c} value={c}>{c}</option>
@@ -227,7 +214,7 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[#6B5B30] uppercase tracking-wider mb-1">
                 Brand / Label *
               </label>
               <input
@@ -236,7 +223,7 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
                 placeholder="e.g. FabIndia, Zara, Levi's, Thrifted"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#2C573F] text-sm"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#EED895] bg-[#FFFDF5] text-[#1A2E22] focus:outline-none focus:border-[#B89635] text-sm"
               />
             </div>
           </div>
@@ -244,13 +231,13 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
           {/* Size, Condition, City row */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[#6B5B30] uppercase tracking-wider mb-1">
                 Size *
               </label>
               <select
                 value={size}
                 onChange={(e) => setSize(e.target.value as ClothingSize)}
-                className="w-full px-3 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#2C573F] text-sm bg-white"
+                className="w-full px-3 py-2.5 rounded-xl border border-[#EED895] bg-[#FFFDF5] text-[#1A2E22] font-semibold focus:outline-none focus:border-[#B89635] text-sm cursor-pointer"
               >
                 {sizes.map((s) => (
                   <option key={s} value={s}>{s}</option>
@@ -259,13 +246,13 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[#6B5B30] uppercase tracking-wider mb-1">
                 Condition *
               </label>
               <select
                 value={condition}
                 onChange={(e) => setCondition(e.target.value as ClothingCondition)}
-                className="w-full px-3 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#2C573F] text-sm bg-white"
+                className="w-full px-3 py-2.5 rounded-xl border border-[#EED895] bg-[#FFFDF5] text-[#1A2E22] font-semibold focus:outline-none focus:border-[#B89635] text-sm cursor-pointer"
               >
                 {conditions.map((cond) => (
                   <option key={cond} value={cond}>{cond}</option>
@@ -274,13 +261,13 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[#6B5B30] uppercase tracking-wider mb-1">
                 Exchange City *
               </label>
               <select
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#2C573F] text-sm bg-white"
+                className="w-full px-3 py-2.5 rounded-xl border border-[#EED895] bg-[#FFFDF5] text-[#1A2E22] font-semibold focus:outline-none focus:border-[#B89635] text-sm cursor-pointer"
               >
                 <optgroup label="28 Capital Cities of Indian States">
                   {INDIAN_STATE_CAPITALS.map((sc) => (
@@ -299,23 +286,23 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
           </div>
 
           {/* Estimated Swap Value & Auto-calculate */}
-          <div className="p-4 bg-[#FAF8F4] rounded-2xl border border-[#E9E3D5] space-y-2">
+          <div className="p-4 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-stone-800 uppercase tracking-wider flex items-center gap-1.5">
-                <Calculator className="w-3.5 h-3.5 text-[#2C573F]" />
+              <label className="text-xs font-bold text-[#1A2E22] uppercase tracking-wider flex items-center gap-1.5">
+                <Calculator className="w-3.5 h-3.5 text-[#8A6A1C]" />
                 Estimated Swap Parity Value (₹) *
               </label>
               <button
                 type="button"
                 onClick={handleAutoEstimate}
-                className="text-xs text-[#234533] hover:text-[#183526] font-semibold flex items-center gap-1 underline"
+                className="text-xs text-[#8A6A1C] hover:text-[#543D10] font-bold flex items-center gap-1 underline"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 Auto-Suggest Value
               </button>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-sm font-bold text-stone-400">₹</span>
+              <span className="text-sm font-bold text-[#7A6430]">₹</span>
               <input
                 type="number"
                 min="100"
@@ -323,17 +310,17 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
                 required
                 value={estimatedValue}
                 onChange={(e) => setEstimatedValue(Number(e.target.value))}
-                className="w-full px-3.5 py-2 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#2C573F] text-sm bg-white font-bold text-stone-800"
+                className="w-full px-3.5 py-2 rounded-xl border border-[#EED895] bg-[#FFFDF5] text-[#1A2E22] focus:outline-none focus:border-[#B89635] text-sm font-bold"
               />
             </div>
-            <p className="text-[11px] text-stone-500">
+            <p className="text-[11px] text-[#6B5B30]">
               Reference guide to match similar grade garments. No cash exchange will occur.
             </p>
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-[#6B5B30] uppercase tracking-wider mb-1">
               Garment Details & Fabric Story *
             </label>
             <textarea
@@ -342,19 +329,19 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
               placeholder="Describe the fabric, fit, how often it was worn, care instructions, and any unique features."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#2C573F] text-sm"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#EED895] bg-[#FFFDF5] text-[#1A2E22] focus:outline-none focus:border-[#B89635] text-sm"
             />
           </div>
 
           {/* Image Upload / Presets */}
           <div className="space-y-3">
-            <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider">
+            <label className="block text-xs font-bold text-[#6B5B30] uppercase tracking-wider">
               Garment Photo *
             </label>
 
             {/* Live Preview */}
             {imageUrl ? (
-              <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-stone-100 border border-stone-300">
+              <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-[#FEF4D5] border border-[#E8D494]">
                 <img
                   src={imageUrl}
                   alt="Preview"
@@ -368,17 +355,17 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
                 >
                   <X className="w-4 h-4" />
                 </button>
-                <div className="absolute bottom-2 left-2 bg-emerald-700/80 text-white text-[11px] px-2 py-0.5 rounded backdrop-blur-sm font-medium flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3" /> Image Loaded
+                <div className="absolute bottom-2 left-2 bg-[#183E2A] text-[#FDE68A] text-[11px] px-2.5 py-0.5 rounded-lg border border-[#D4AF37]/40 font-bold flex items-center gap-1 shadow-xs">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Image Loaded
                 </div>
               </div>
             ) : (
-              <div className="border-2 border-dashed border-stone-300 hover:border-[#2C573F] rounded-2xl p-6 text-center space-y-3 transition bg-[#FAF9F6]">
-                <div className="w-12 h-12 rounded-full bg-[#EAE3D5] text-[#2C573F] flex items-center justify-center mx-auto">
+              <div className="border-2 border-dashed border-[#EED895] hover:border-[#8A6A1C] rounded-2xl p-6 text-center space-y-3 transition bg-[#FEF6DB]">
+                <div className="w-12 h-12 rounded-full bg-[#FEF4D5] text-[#8A6A1C] flex items-center justify-center mx-auto border border-[#E8D494]">
                   <Upload className="w-6 h-6" />
                 </div>
                 <div>
-                  <label className="cursor-pointer text-xs font-bold text-[#234533] hover:underline bg-[#EAE2D4] px-3 py-1.5 rounded-lg inline-block">
+                  <label className="cursor-pointer text-xs font-bold text-[#1A2E22] hover:bg-[#FCEFC7] bg-[#FFF9E6] px-4 py-2 rounded-xl inline-block border border-[#EED895] shadow-xs transition">
                     Choose Local Photo
                     <input
                       type="file"
@@ -387,7 +374,7 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
                       className="hidden"
                     />
                   </label>
-                  <p className="text-[11px] text-stone-500 mt-1">
+                  <p className="text-[11px] text-[#6B5B30] mt-1">
                     Upload PNG, JPG, or WEBP from your phone or laptop
                   </p>
                 </div>
@@ -396,7 +383,7 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
 
             {/* Or pick from curated demo presets */}
             <div className="space-y-1.5">
-              <span className="text-[11px] font-semibold text-stone-500">
+              <span className="text-[11px] font-bold text-[#6B5B30]">
                 Or pick a curated fashion preset:
               </span>
               <div className="flex flex-wrap gap-1.5">
@@ -405,7 +392,7 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
                     key={preset.label}
                     type="button"
                     onClick={() => setImageUrl(preset.url)}
-                    className="text-[10px] bg-stone-100 hover:bg-[#EAE2D4] text-stone-700 px-2.5 py-1 rounded-md border border-stone-200 transition"
+                    className="text-[10px] font-semibold bg-[#FEF4D5] hover:bg-[#FCEFC7] text-[#1A2E22] px-2.5 py-1 rounded-lg border border-[#E8D494] transition"
                   >
                     {preset.label}
                   </button>
@@ -420,7 +407,7 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
                 placeholder="Or paste an image web URL..."
                 value={imageUrl.startsWith('data:') ? '' : imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-lg border border-stone-300 text-xs focus:ring-1 focus:ring-[#2C573F]"
+                className="w-full px-3 py-2 rounded-xl border border-[#EED895] bg-[#FFFDF5] text-xs text-[#1A2E22] focus:outline-none focus:border-[#B89635]"
               />
             </div>
           </div>
@@ -428,13 +415,13 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
           {/* Status (if editing) */}
           {itemToEdit && (
             <div>
-              <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[#6B5B30] uppercase tracking-wider mb-1">
                 Listing Availability Status
               </label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as any)}
-                className="w-full px-3 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#2C573F] text-sm bg-white"
+                className="w-full px-3 py-2.5 rounded-xl border border-[#EED895] bg-[#FFFDF5] text-[#1A2E22] font-semibold focus:outline-none focus:border-[#B89635] text-sm"
               >
                 <option value="available">Available for Swap</option>
                 <option value="pending">Swap In Progress</option>
@@ -444,18 +431,18 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
           )}
 
           {/* Submit CTA */}
-          <div className="pt-4 border-t border-stone-200 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-[#EED895]/60 flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl border border-stone-300 text-stone-600 hover:bg-stone-50 text-xs font-semibold transition"
+              className="px-5 py-2.5 rounded-xl border border-[#EED895] text-[#6B5B30] hover:bg-[#FEF4D5] text-xs font-bold transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2.5 rounded-xl bg-[#234533] hover:bg-[#1A3426] text-white text-xs font-bold shadow-md transition disabled:opacity-50"
+              className="px-6 py-2.5 rounded-xl bg-[#183E2A] hover:bg-[#122A1E] text-[#FDE68A] text-xs font-bold shadow-xl transition disabled:opacity-50 border border-[#D4AF37]/40"
             >
               {isSubmitting ? 'Saving to Database...' : itemToEdit ? 'Save Changes' : 'Publish Listing'}
             </button>

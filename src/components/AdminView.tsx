@@ -151,45 +151,45 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
   return (
     <div className="space-y-6 pb-12 max-w-6xl mx-auto">
       {/* 1. Header with Home Navigation & Reset */}
-      <div className="bg-[#1C3527] text-white p-6 sm:p-7 rounded-3xl shadow-lg border border-[#2D5A43] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-[#0B1E14] text-[#FDF0CD] p-6 sm:p-7 rounded-3xl shadow-xl border border-[#D4AF37]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <button
               onClick={onGoHome}
-              className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#2A4E3B] hover:bg-[#346049] text-[#E7DEC8] text-xs font-semibold transition border border-[#44785E]"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#183E2A] hover:bg-[#204E35] text-[#FDE68A] text-xs font-semibold transition border border-[#D4AF37]/40"
             >
-              <Home className="w-3.5 h-3.5 text-[#C5A059]" />
+              <Home className="w-3.5 h-3.5 text-[#FDE68A]" />
               <span>← Back to Home</span>
             </button>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[11px] font-bold uppercase tracking-wider border border-amber-500/30">
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#D4AF37]/20 text-[#FDE68A] text-[11px] font-bold uppercase tracking-wider border border-[#D4AF37]/40">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#FDE68A]" />
               Admin Portal
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#FAF8F4]">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#FDE68A]">
             Admin Control Center & Moderation
           </h2>
-          <p className="text-xs text-[#C5D9C4] mt-1">
-            Manage listed items, monitor who sent swap requests to whom, verify accepted requests, and review completed swaps.
+          <p className="text-xs text-[#FDF0CD]/80 mt-1">
+            Manage listed items, audit member exchange activity, verify accepted requests, and review completed swaps.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             onClick={handleResetDemoData}
-            className="px-3.5 py-2 bg-[#2A4E3B] hover:bg-[#346049] text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-[#44785E] shadow-sm transition"
+            className="px-3.5 py-2 bg-[#D4AF37] hover:bg-[#E5C175] text-[#0A1B13] rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md transition"
             title="Reset database to default seed listings and test accounts"
           >
-            <RotateCcw className="w-3.5 h-3.5 text-[#E7DEC8]" />
+            <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset Demo Data</span>
           </button>
         </div>
       </div>
 
       {actionMsg && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-xl flex items-center justify-between shadow-xs">
+        <div className="p-3 bg-[#FFF9E6] border border-[#EED895] text-stone-900 text-xs rounded-xl flex items-center justify-between shadow-xs">
           <span className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-700" />
             {actionMsg}
           </span>
           <button onClick={() => setActionMsg(null)} className="font-bold text-stone-500 hover:text-stone-800">×</button>
@@ -197,53 +197,52 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
       )}
 
       {error && (
-        <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center justify-between shadow-xs">
+        <div className="p-3 bg-rose-950/80 border border-rose-500 text-rose-200 text-xs rounded-xl flex items-center justify-between shadow-xs">
           <span className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-600" />
+            <AlertCircle className="w-4 h-4 text-rose-400" />
             {error}
           </span>
-          <button onClick={() => setError(null)} className="font-bold text-stone-500 hover:text-stone-800">×</button>
+          <button onClick={() => setError(null)} className="font-bold text-rose-300 hover:text-white">×</button>
         </div>
       )}
 
-      {/* 2. KPI Stats */}
+      {/* 2. KPI Stats (Light Golden Yellow Boxes) */}
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-4 bg-[#FAF7F0] rounded-2xl border border-[#E5DFD4] shadow-xs">
-            <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Cataloged Items</span>
-            <div className="text-2xl font-serif font-bold text-stone-900 mt-1">{stats.totalListings}</div>
-            <span className="text-[10px] text-emerald-700 font-medium">Garments across 28 states</span>
+          <div className="p-4 bg-[#FFF9E6] rounded-2xl border border-[#EED895] shadow-md">
+            <span className="text-[11px] font-bold text-[#8A6A1C] uppercase tracking-wider">Cataloged Items</span>
+            <div className="text-2xl font-serif font-bold text-[#3B2904] mt-1">{stats.totalListings}</div>
+            <span className="text-[10px] text-emerald-800 font-semibold">Garments across 28 states</span>
           </div>
 
-          <div className="p-4 bg-[#FAF7F0] rounded-2xl border border-[#E5DFD4] shadow-xs">
-            <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">All Swap Requests</span>
-            <div className="text-2xl font-serif font-bold text-stone-900 mt-1">{swaps.length}</div>
-            <span className="text-[10px] text-stone-500">{swaps.filter(s => s.status === 'pending').length} pending approval</span>
+          <div className="p-4 bg-[#FFF9E6] rounded-2xl border border-[#EED895] shadow-md">
+            <span className="text-[11px] font-bold text-[#8A6A1C] uppercase tracking-wider">All Swap Requests</span>
+            <div className="text-2xl font-serif font-bold text-[#3B2904] mt-1">{swaps.length}</div>
+            <span className="text-[10px] text-[#665022] font-medium">{swaps.filter(s => s.status === 'pending').length} pending approval</span>
           </div>
 
-          <div className="p-4 bg-[#FAF7F0] rounded-2xl border border-[#E5DFD4] shadow-xs">
-            <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Accepted Swaps</span>
-            <div className="text-2xl font-serif font-bold text-[#C5A059] mt-1">{acceptedSwaps.length}</div>
-            <span className="text-[10px] text-stone-500">In handover / meetup</span>
+          <div className="p-4 bg-[#FFF9E6] rounded-2xl border border-[#EED895] shadow-md">
+            <span className="text-[11px] font-bold text-[#8A6A1C] uppercase tracking-wider">Accepted Swaps</span>
+            <div className="text-2xl font-serif font-bold text-[#8A6A1C] mt-1">{acceptedSwaps.length}</div>
+            <span className="text-[10px] text-[#665022] font-medium">In handover / meetup</span>
           </div>
 
-          <div className="p-4 bg-[#FAF7F0] rounded-2xl border border-[#E5DFD4] shadow-xs">
-            <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Successful Swaps</span>
+          <div className="p-4 bg-[#FFF9E6] rounded-2xl border border-[#EED895] shadow-md">
+            <span className="text-[11px] font-bold text-[#8A6A1C] uppercase tracking-wider">Successful Swaps</span>
             <div className="text-2xl font-serif font-bold text-emerald-800 mt-1">{successfulSwaps.length}</div>
-            <span className="text-[10px] text-emerald-600 font-medium">Completed & verified</span>
+            <span className="text-[10px] text-emerald-700 font-semibold">Completed & verified</span>
           </div>
         </div>
       )}
 
-      {/* 3. ADMIN NAVIGATION TABS */}
-      {/* Required Tabs: Home, Listed Items, Who Sent to Whom Swaps Requests, Accepted Swap Requests, Successful Swap Request */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-stone-200 pb-3 text-xs font-semibold">
+      {/* 3. ADMIN NAVIGATION TABS with Proper English */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-[#D4AF37]/25 pb-3 text-xs font-semibold">
         <button
           onClick={onGoHome}
-          className="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 text-stone-600 hover:text-[#234C3A] hover:bg-stone-100"
+          className="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 text-[#FDF0CD]/80 hover:text-[#FDE68A] hover:bg-[#122A1E]"
           title="Return to Main Landing Dashboard"
         >
-          <Home className="w-4 h-4 text-[#234C3A]" />
+          <Home className="w-4 h-4 text-[#FDE68A]" />
           <span>Home</span>
         </button>
 
@@ -251,11 +250,11 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
           onClick={() => setActiveTab('listed-items')}
           className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 ${
             activeTab === 'listed-items'
-              ? 'bg-[#234C3A] text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              ? 'bg-[#1E4D35] text-[#FEF3C7] border border-[#D4AF37]/50 shadow-xs'
+              : 'text-[#FDF0CD]/80 hover:bg-[#122A1E] hover:text-[#FEF3C7]'
           }`}
         >
-          <Shirt className="w-4 h-4" />
+          <Shirt className="w-4 h-4 text-[#FDE68A]" />
           <span>Listed Items ({listings.length})</span>
         </button>
 
@@ -263,20 +262,20 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
           onClick={() => setActiveTab('who-sent-to-whom')}
           className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 ${
             activeTab === 'who-sent-to-whom'
-              ? 'bg-[#234C3A] text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              ? 'bg-[#1E4D35] text-[#FEF3C7] border border-[#D4AF37]/50 shadow-xs'
+              : 'text-[#FDF0CD]/80 hover:bg-[#122A1E] hover:text-[#FEF3C7]'
           }`}
         >
-          <Repeat className="w-4 h-4" />
-          <span>Who Sent to Whom Swaps ({swaps.length})</span>
+          <Repeat className="w-4 h-4 text-[#FDE68A]" />
+          <span>Member Exchange Activity ({swaps.length})</span>
         </button>
 
         <button
           onClick={() => setActiveTab('accepted-swaps')}
           className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 ${
             activeTab === 'accepted-swaps'
-              ? 'bg-[#C5A059] text-stone-900 font-bold shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              ? 'bg-[#D4AF37] text-stone-900 font-bold shadow-xs'
+              : 'text-[#FDF0CD]/80 hover:bg-[#122A1E] hover:text-[#FEF3C7]'
           }`}
         >
           <CheckCircle2 className="w-4 h-4" />
@@ -287,8 +286,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
           onClick={() => setActiveTab('successful-swaps')}
           className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 ${
             activeTab === 'successful-swaps'
-              ? 'bg-emerald-800 text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              ? 'bg-emerald-700 text-[#FEF3C7] shadow-xs'
+              : 'text-[#FDF0CD]/80 hover:bg-[#122A1E] hover:text-[#FEF3C7]'
           }`}
         >
           <CheckCheck className="w-4 h-4" />
@@ -299,11 +298,11 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
           onClick={() => setActiveTab('disputes')}
           className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 ${
             activeTab === 'disputes'
-              ? 'bg-stone-800 text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              ? 'bg-[#1E4D35] text-[#FEF3C7] border border-[#D4AF37]/50 shadow-xs'
+              : 'text-[#FDF0CD]/80 hover:bg-[#122A1E] hover:text-[#FEF3C7]'
           }`}
         >
-          <AlertTriangle className="w-4 h-4 text-amber-500" />
+          <AlertTriangle className="w-4 h-4 text-[#FDE68A]" />
           <span>Disputes ({disputes.length})</span>
         </button>
 
@@ -311,11 +310,11 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
           onClick={() => setActiveTab('users')}
           className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 ${
             activeTab === 'users'
-              ? 'bg-stone-800 text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              ? 'bg-[#1E4D35] text-[#FEF3C7] border border-[#D4AF37]/50 shadow-xs'
+              : 'text-[#FDF0CD]/80 hover:bg-[#122A1E] hover:text-[#FEF3C7]'
           }`}
         >
-          <Users className="w-4 h-4" />
+          <Users className="w-4 h-4 text-[#FDE68A]" />
           <span>Users ({users.length})</span>
         </button>
       </div>
@@ -324,22 +323,22 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
 
       {/* TAB A: LISTED ITEMS */}
       {activeTab === 'listed-items' && (
-        <div className="bg-[#FAF7F0] rounded-3xl border border-[#E5DFD4] shadow-sm overflow-hidden">
-          <div className="p-4 bg-[#F5F2EB] border-b border-[#ECE5D8] flex flex-wrap items-center justify-between gap-2">
+        <div className="bg-[#FFF9E6] rounded-3xl border border-[#EED895] shadow-xl overflow-hidden">
+          <div className="p-4 bg-[#FCEFC7] border-b border-[#EED895] flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h3 className="text-sm font-bold text-stone-900">All Listed Clothes Across India</h3>
-              <p className="text-[11px] text-stone-500">
+              <h3 className="text-sm font-bold text-[#3B2904]">All Listed Clothes Across India</h3>
+              <p className="text-[11px] text-[#54421A]">
                 Audit clothes for quality, category compliance (garments only), and community safety.
               </p>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-1 bg-stone-200 text-stone-700 rounded-lg">
+            <span className="text-xs font-bold px-2.5 py-1 bg-[#D4AF37] text-stone-950 rounded-lg">
               {listings.length} Active Garments
             </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#FAF8F4] text-stone-600 uppercase font-bold text-[10px] tracking-wider border-b border-stone-200">
+              <thead className="bg-[#FAF0CD] text-[#54421A] uppercase font-bold text-[10px] tracking-wider border-b border-[#EED895]">
                 <tr>
                   <th className="py-3 px-4">Garment</th>
                   <th className="py-3 px-4">Category</th>
@@ -350,14 +349,14 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
                   <th className="py-3 px-4 text-right">Moderation</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-stone-100 text-stone-700">
+              <tbody className="divide-y divide-[#EED895]/60 text-stone-800">
                 {listings.map((item) => (
-                  <tr key={item.id} className="hover:bg-stone-50">
+                  <tr key={item.id} className="hover:bg-[#FAF0CD]/50 transition">
                     <td className="py-3 px-4 flex items-center gap-3">
                       <img
                         src={item.imageUrl}
                         alt={item.title}
-                        className="w-10 h-12 rounded-lg object-cover shrink-0 border border-stone-200"
+                        className="w-10 h-12 rounded-lg object-cover shrink-0 border border-[#EED895]"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src =
                             'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=300&q=80';
@@ -365,26 +364,26 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
                       />
                       <div>
                         <div className="font-semibold text-stone-900 line-clamp-1">{item.title}</div>
-                        <div className="text-[10px] text-stone-400">ID: {item.id}</div>
+                        <div className="text-[10px] text-stone-500">ID: {item.id}</div>
                       </div>
                     </td>
                     <td className="py-3 px-4">
-                      <span className="px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 text-[10px] font-medium">
+                      <span className="px-2 py-0.5 rounded-full bg-[#FCEFC7] text-[#8A6A1C] text-[10px] font-bold border border-[#EED895]/60">
                         {item.category}
                       </span>
                     </td>
                     <td className="py-3 px-4">
-                      <div className="font-medium text-stone-800">{item.userName}</div>
+                      <div className="font-medium text-stone-900">{item.userName}</div>
                       <div className="text-[10px] text-stone-500 flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-stone-400" />
+                        <MapPin className="w-3 h-3 text-[#8A6A1C]" />
                         {item.city}
                       </div>
                     </td>
                     <td className="py-3 px-4">
-                      <div className="font-medium">{item.size}</div>
-                      <div className="text-[10px] text-stone-400 capitalize">{item.condition}</div>
+                      <div className="font-semibold text-stone-900">{item.size}</div>
+                      <div className="text-[10px] text-stone-500 capitalize">{item.condition}</div>
                     </td>
-                    <td className="py-3 px-4 font-bold text-stone-900">
+                    <td className="py-3 px-4 font-bold text-[#8A6A1C]">
                       ₹{item.estimatedValue}
                     </td>
                     <td className="py-3 px-4">
@@ -417,18 +416,18 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
         </div>
       )}
 
-      {/* TAB B: WHO SENT TO WHOM SWAPS REQUESTS */}
+      {/* TAB B: MEMBER EXCHANGE ACTIVITY (Reframed into proper English) */}
       {activeTab === 'who-sent-to-whom' && (
         <div className="space-y-4">
-          <div className="bg-[#FAF8F4] p-4 rounded-2xl border border-stone-200 flex flex-wrap items-center justify-between gap-2">
+          <div className="bg-[#FFF9E6] p-4 rounded-2xl border border-[#EED895] flex flex-wrap items-center justify-between gap-2 shadow-sm">
             <div>
-              <h3 className="text-sm font-bold text-stone-900">All Swap Requests: Who Sent to Whom</h3>
-              <p className="text-[11px] text-stone-500">
-                Track full two-party swap history showing sender (requester) and recipient (owner), offered item, and requested garment.
+              <h3 className="text-sm font-bold text-[#3B2904]">Member-to-Member Swap Activity & Exchange Audit</h3>
+              <p className="text-[11px] text-[#54421A]">
+                Comprehensive audit trail of member exchange proposals, indicating initiating members, recipient wardrobes, offered garments, and status.
               </p>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-1 bg-[#234C3A] text-white rounded-lg">
-              {swaps.length} Total Requests
+            <span className="text-xs font-bold px-2.5 py-1 bg-[#1E4D35] text-[#FEF3C7] rounded-lg border border-[#D4AF37]/40 shadow-xs">
+              {swaps.length} Total Proposals
             </span>
           </div>
 
@@ -440,13 +439,13 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
               return (
                 <div
                   key={swap.id}
-                  className="bg-[#FAF7F0] rounded-2xl border border-[#E5DFD4] p-5 shadow-xs hover:border-[#234C3A] transition"
+                  className="bg-[#FFF9E6] rounded-2xl border border-[#EED895] p-5 shadow-sm hover:border-[#D4AF37] transition"
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#ECE5D8] pb-3 mb-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#EED895] pb-3 mb-4">
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-mono text-stone-500">Swap ID: {swap.id}</span>
-                      <span className="text-stone-300">•</span>
-                      <span className="text-[11px] text-stone-500">
+                      <span className="text-[11px] font-mono text-[#665022]">Swap ID: {swap.id}</span>
+                      <span className="text-[#EED895]">•</span>
+                      <span className="text-[11px] text-[#665022]">
                         Date: {new Date(swap.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </span>
                     </div>
@@ -466,76 +465,76 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
                     </span>
                   </div>
 
-                  {/* Flow: Sender -> Receiver */}
+                  {/* Flow: Initiating Member -> Recipient Member */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                    {/* SENDER (WHO SENT) */}
-                    <div className="bg-[#F5F2EB] p-4 rounded-xl border border-[#ECE5D8]">
+                    {/* INITIATING MEMBER */}
+                    <div className="bg-[#FDF3D6] p-4 rounded-xl border border-[#EED895]">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-bold text-stone-500 uppercase tracking-wider flex items-center gap-1">
-                          <Send className="w-3 h-3 text-[#234C3A]" />
-                          Sender (Requester)
+                        <span className="text-[10px] font-bold text-[#8A6A1C] uppercase tracking-wider flex items-center gap-1">
+                          <Send className="w-3 h-3 text-[#8A6A1C]" />
+                          Initiating Member (Sender)
                         </span>
-                        <span className="text-xs font-bold text-[#234C3A]">{swap.requesterName}</span>
+                        <span className="text-xs font-bold text-[#3B2904]">{swap.requesterName}</span>
                       </div>
-                      <div className="text-[11px] text-stone-500 mb-3 flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-stone-400" />
+                      <div className="text-[11px] text-stone-600 mb-3 flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-[#8A6A1C]" />
                         {swap.requesterCity || 'Registered City'}
                       </div>
 
                       {/* Offered Garment */}
-                      <div className="flex items-center gap-3 bg-[#FAF7F0] p-2.5 rounded-lg border border-[#E5DFD4]">
+                      <div className="flex items-center gap-3 bg-[#FFF9E6] p-2.5 rounded-lg border border-[#EED895]">
                         {offItem?.imageUrl ? (
                           <img
                             src={offItem.imageUrl}
                             alt={offItem.title}
-                            className="w-12 h-14 rounded object-cover border border-stone-200"
+                            className="w-12 h-14 rounded object-cover border border-[#EED895]"
                           />
                         ) : (
-                          <div className="w-12 h-14 rounded bg-stone-100 flex items-center justify-center">
-                            <Shirt className="w-6 h-6 text-stone-400" />
+                          <div className="w-12 h-14 rounded bg-[#FCEFC7] flex items-center justify-center">
+                            <Shirt className="w-6 h-6 text-[#8A6A1C]" />
                           </div>
                         )}
                         <div>
-                          <span className="text-[10px] text-stone-400 uppercase font-semibold">Offered Garment</span>
+                          <span className="text-[10px] text-stone-500 uppercase font-semibold">Offered Garment</span>
                           <div className="text-xs font-bold text-stone-900 line-clamp-1">{offItem?.title || `Item #${swap.offeredItemId}`}</div>
-                          <div className="text-[11px] text-[#234C3A] font-semibold">
+                          <div className="text-[11px] text-[#8A6A1C] font-semibold">
                             Est. Parity: ₹{offItem?.estimatedValue || '—'}
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* RECEIVER (TO WHOM) */}
-                    <div className="bg-[#F5F2EB] p-4 rounded-xl border border-[#ECE5D8]">
+                    {/* RECIPIENT MEMBER */}
+                    <div className="bg-[#FDF3D6] p-4 rounded-xl border border-[#EED895]">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-bold text-stone-500 uppercase tracking-wider flex items-center gap-1">
-                          <Inbox className="w-3 h-3 text-[#C5A059]" />
-                          Recipient (Owner)
+                        <span className="text-[10px] font-bold text-[#8A6A1C] uppercase tracking-wider flex items-center gap-1">
+                          <Inbox className="w-3 h-3 text-[#8A6A1C]" />
+                          Target Wardrobe (Recipient)
                         </span>
-                        <span className="text-xs font-bold text-[#1C3527]">{swap.ownerName}</span>
+                        <span className="text-xs font-bold text-[#3B2904]">{swap.ownerName}</span>
                       </div>
-                      <div className="text-[11px] text-stone-500 mb-3 flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-stone-400" />
+                      <div className="text-[11px] text-stone-600 mb-3 flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-[#8A6A1C]" />
                         {swap.ownerCity || 'Owner City'}
                       </div>
 
                       {/* Requested Garment */}
-                      <div className="flex items-center gap-3 bg-[#FAF7F0] p-2.5 rounded-lg border border-[#E5DFD4]">
+                      <div className="flex items-center gap-3 bg-[#FFF9E6] p-2.5 rounded-lg border border-[#EED895]">
                         {reqItem?.imageUrl ? (
                           <img
                             src={reqItem.imageUrl}
                             alt={reqItem.title}
-                            className="w-12 h-14 rounded object-cover border border-stone-200"
+                            className="w-12 h-14 rounded object-cover border border-[#EED895]"
                           />
                         ) : (
-                          <div className="w-12 h-14 rounded bg-stone-100 flex items-center justify-center">
-                            <Shirt className="w-6 h-6 text-stone-400" />
+                          <div className="w-12 h-14 rounded bg-[#FCEFC7] flex items-center justify-center">
+                            <Shirt className="w-6 h-6 text-[#8A6A1C]" />
                           </div>
                         )}
                         <div>
-                          <span className="text-[10px] text-stone-400 uppercase font-semibold">Requested Garment</span>
+                          <span className="text-[10px] text-stone-500 uppercase font-semibold">Requested Garment</span>
                           <div className="text-xs font-bold text-stone-900 line-clamp-1">{reqItem?.title || `Item #${swap.requestedItemId}`}</div>
-                          <div className="text-[11px] text-[#234C3A] font-semibold">
+                          <div className="text-[11px] text-[#8A6A1C] font-semibold">
                             Est. Parity: ₹{reqItem?.estimatedValue || '—'}
                           </div>
                         </div>
@@ -545,12 +544,12 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
 
                   {/* Approx Delivery / Exchange Date Row */}
                   {swap.approxDeliveryDate && (
-                    <div className="mt-3 flex items-center justify-between gap-2 text-xs bg-amber-50/80 p-2.5 rounded-xl border border-amber-200 text-amber-900 font-medium">
+                    <div className="mt-3 flex items-center justify-between gap-2 text-xs bg-[#FCEFC7] p-2.5 rounded-xl border border-[#EED895] text-[#3B2904] font-medium">
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-amber-700 shrink-0" />
+                        <Calendar className="w-4 h-4 text-[#8A6A1C] shrink-0" />
                         <span>Approx. Delivery / Exchange Date: <strong>{new Date(swap.approxDeliveryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</strong></span>
                       </div>
-                      <span className="text-[11px] text-amber-800 bg-amber-100/70 px-2 py-0.5 rounded border border-amber-300">
+                      <span className="text-[11px] text-[#453005] bg-[#F9E6A8] px-2 py-0.5 rounded border border-[#E5CF88]">
                         {swap.handoverMethod === 'courier' ? 'Courier Delivery' : 'Public Landmark Meetup'}
                       </span>
                     </div>
@@ -558,8 +557,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
 
                   {/* Handover & Delivery Details */}
                   {swap.pickupLocation && (
-                    <div className="mt-2 text-xs bg-[#F5F2EB] p-2.5 rounded-xl border border-[#ECE5D8] text-stone-700 flex items-center gap-2">
-                      <MapPin className="w-3.5 h-3.5 text-[#234C3A] shrink-0" />
+                    <div className="mt-2 text-xs bg-[#FDF3D6] p-2.5 rounded-xl border border-[#EED895] text-stone-800 flex items-center gap-2">
+                      <MapPin className="w-3.5 h-3.5 text-[#8A6A1C] shrink-0" />
                       <span>Meetup Landmark / Delivery Note: <strong>{swap.pickupLocation}</strong></span>
                     </div>
                   )}
@@ -573,20 +572,20 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
       {/* TAB C: ACCEPTED SWAP REQUESTS */}
       {activeTab === 'accepted-swaps' && (
         <div className="space-y-4">
-          <div className="bg-[#FAF8F4] p-4 rounded-2xl border border-stone-200 flex flex-wrap items-center justify-between gap-2">
+          <div className="bg-[#FFF9E6] p-4 rounded-2xl border border-[#EED895] flex flex-wrap items-center justify-between gap-2 shadow-sm">
             <div>
-              <h3 className="text-sm font-bold text-stone-900">Accepted Swap Requests</h3>
-              <p className="text-[11px] text-stone-500">
+              <h3 className="text-sm font-bold text-[#3B2904]">Accepted Swap Requests</h3>
+              <p className="text-[11px] text-[#54421A]">
                 Swaps where the garment owner has agreed to exchange. Participants are currently coordinating pickup or courier shipment.
               </p>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-1 bg-[#C5A059] text-stone-900 rounded-lg">
+            <span className="text-xs font-bold px-2.5 py-1 bg-[#D4AF37] text-stone-950 rounded-lg">
               {acceptedSwaps.length} In Progress
             </span>
           </div>
 
           {acceptedSwaps.length === 0 ? (
-            <div className="bg-[#FAF7F0] rounded-2xl p-8 text-center text-xs text-stone-500 border border-[#E5DFD4]">
+            <div className="bg-[#FFF9E6] rounded-2xl p-8 text-center text-xs text-stone-600 border border-[#EED895]">
               No accepted swaps in progress at the moment.
             </div>
           ) : (
@@ -596,17 +595,17 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
                 const offItem = listings.find((l) => l.id === swap.offeredItemId);
 
                 return (
-                  <div key={swap.id} className="bg-[#FAF7F0] rounded-2xl border border-amber-200 p-5 shadow-xs">
-                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#ECE5D8] pb-3 mb-3">
+                  <div key={swap.id} className="bg-[#FFF9E6] rounded-2xl border border-[#EED895] p-5 shadow-sm">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#EED895] pb-3 mb-3">
                       <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold uppercase">
+                        <span className="px-2 py-0.5 rounded bg-[#FCEFC7] text-[#8A6A1C] text-[10px] font-bold uppercase border border-[#EED895]">
                           Agreement Accepted
                         </span>
-                        <span className="text-xs font-medium text-stone-700">
+                        <span className="text-xs font-semibold text-stone-900">
                           {swap.requesterName} ↔ {swap.ownerName}
                         </span>
                       </div>
-                      <span className="text-xs text-stone-500">
+                      <span className="text-xs text-stone-600">
                         {new Date(swap.createdAt).toLocaleDateString('en-IN')}
                       </span>
                     </div>
@@ -616,46 +615,46 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
                         <img
                           src={offItem?.imageUrl || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=300&q=80'}
                           alt={offItem?.title}
-                          className="w-12 h-14 rounded-lg object-cover border border-stone-200"
+                          className="w-12 h-14 rounded-lg object-cover border border-[#EED895]"
                         />
                         <div>
-                          <div className="text-[10px] text-stone-400 uppercase">Offered by {swap.requesterName}</div>
+                          <div className="text-[10px] text-stone-500 uppercase">Offered by {swap.requesterName}</div>
                           <div className="text-xs font-bold text-stone-900">{offItem?.title || 'Garment'}</div>
-                          <div className="text-[11px] text-stone-500">{swap.requesterCity}</div>
+                          <div className="text-[11px] text-stone-600">{swap.requesterCity}</div>
                         </div>
                       </div>
 
-                      <ArrowRight className="w-5 h-5 text-amber-600 shrink-0 hidden sm:block" />
+                      <ArrowRight className="w-5 h-5 text-[#8A6A1C] shrink-0 hidden sm:block" />
 
                       <div className="flex items-center gap-3">
                         <img
                           src={reqItem?.imageUrl || 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=300&q=80'}
                           alt={reqItem?.title}
-                          className="w-12 h-14 rounded-lg object-cover border border-stone-200"
+                          className="w-12 h-14 rounded-lg object-cover border border-[#EED895]"
                         />
                         <div>
-                          <div className="text-[10px] text-stone-400 uppercase">Requested from {swap.ownerName}</div>
+                          <div className="text-[10px] text-stone-500 uppercase">Requested from {swap.ownerName}</div>
                           <div className="text-xs font-bold text-stone-900">{reqItem?.title || 'Garment'}</div>
-                          <div className="text-[11px] text-stone-500">{swap.ownerCity}</div>
+                          <div className="text-[11px] text-stone-600">{swap.ownerCity}</div>
                         </div>
                       </div>
                     </div>
 
                     {swap.approxDeliveryDate && (
-                      <div className="mt-3 p-2.5 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900 flex items-center justify-between gap-2">
+                      <div className="mt-3 p-2.5 bg-[#FCEFC7] rounded-xl border border-[#EED895] text-xs text-[#3B2904] flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4 text-amber-700 shrink-0" />
+                          <Calendar className="w-4 h-4 text-[#8A6A1C] shrink-0" />
                           <span>Approx. Delivery / Exchange Date: <strong>{new Date(swap.approxDeliveryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</strong></span>
                         </div>
-                        <span className="text-[10px] bg-amber-100 px-2 py-0.5 rounded text-amber-800">
+                        <span className="text-[10px] bg-[#F9E6A8] px-2 py-0.5 rounded text-[#453005] border border-[#E5CF88]">
                           {swap.handoverMethod === 'courier' ? 'Courier Dispatch' : 'Local Meetup'}
                         </span>
                       </div>
                     )}
 
                     {swap.pickupLocation && (
-                      <div className="mt-2 p-2 bg-[#F5F2EB] border border-[#ECE5D8] rounded-lg text-xs text-stone-800 flex items-center gap-2">
-                        <MapPin className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                      <div className="mt-2 p-2 bg-[#FDF3D6] border border-[#EED895] rounded-lg text-xs text-stone-800 flex items-center gap-2">
+                        <MapPin className="w-3.5 h-3.5 text-[#8A6A1C] shrink-0" />
                         <span>Agreed Exchange Location: <strong>{swap.pickupLocation}</strong></span>
                       </div>
                     )}
@@ -670,20 +669,20 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
       {/* TAB D: SUCCESSFUL SWAP REQUESTS */}
       {activeTab === 'successful-swaps' && (
         <div className="space-y-4">
-          <div className="bg-[#F5F2EB] p-4 rounded-2xl border border-[#ECE5D8] flex flex-wrap items-center justify-between gap-2">
+          <div className="bg-[#FFF9E6] p-4 rounded-2xl border border-[#EED895] flex flex-wrap items-center justify-between gap-2 shadow-sm">
             <div>
-              <h3 className="text-sm font-bold text-stone-900">Successful & Completed Swap Requests</h3>
-              <p className="text-[11px] text-stone-500">
+              <h3 className="text-sm font-bold text-[#3B2904]">Successful & Completed Swap Requests</h3>
+              <p className="text-[11px] text-[#54421A]">
                 Exchanges verified and completed by both swappers. Zero cash spent, textile diverted from landfill!
               </p>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-1 bg-emerald-800 text-white rounded-lg">
+            <span className="text-xs font-bold px-2.5 py-1 bg-emerald-800 text-white rounded-lg">
               {successfulSwaps.length} Verified Complete
             </span>
           </div>
 
           {successfulSwaps.length === 0 ? (
-            <div className="bg-[#FAF7F0] rounded-2xl p-8 text-center text-xs text-stone-500 border border-[#E5DFD4]">
+            <div className="bg-[#FFF9E6] rounded-2xl p-8 text-center text-xs text-stone-600 border border-[#EED895]">
               No completed swaps recorded yet.
             </div>
           ) : (
@@ -693,14 +692,14 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
                 const offItem = listings.find((l) => l.id === swap.offeredItemId);
 
                 return (
-                  <div key={swap.id} className="bg-[#FAF7F0] rounded-2xl border border-emerald-200 p-5 shadow-xs">
-                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#ECE5D8] pb-3 mb-3">
+                  <div key={swap.id} className="bg-[#FFF9E6] rounded-2xl border border-[#EED895] p-5 shadow-sm">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#EED895] pb-3 mb-3">
                       <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase flex items-center gap-1">
+                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase flex items-center gap-1 border border-emerald-300">
                           <CheckCheck className="w-3 h-3 text-emerald-700" />
                           Successful Exchange
                         </span>
-                        <span className="text-xs font-semibold text-stone-800">
+                        <span className="text-xs font-bold text-stone-900">
                           {swap.requesterName} ({swap.requesterCity}) ↔ {swap.ownerName} ({swap.ownerCity})
                         </span>
                       </div>
@@ -710,51 +709,51 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="flex items-center gap-3 bg-emerald-50/60 p-3 rounded-xl border border-emerald-200">
+                      <div className="flex items-center gap-3 bg-[#FDF3D6] p-3 rounded-xl border border-[#EED895]">
                         <img
                           src={offItem?.imageUrl || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=300&q=80'}
                           alt={offItem?.title}
-                          className="w-12 h-14 rounded-lg object-cover border border-emerald-200"
+                          className="w-12 h-14 rounded-lg object-cover border border-[#EED895]"
                         />
                         <div>
-                          <div className="text-[10px] text-emerald-800 font-medium">From {swap.requesterName}</div>
+                          <div className="text-[10px] text-stone-500 font-medium">From {swap.requesterName}</div>
                           <div className="text-xs font-bold text-stone-900">{offItem?.title || 'Garment'}</div>
-                          <div className="text-[11px] text-emerald-700 font-semibold">Parity: ₹{offItem?.estimatedValue || '—'}</div>
+                          <div className="text-[11px] text-[#8A6A1C] font-semibold">Parity: ₹{offItem?.estimatedValue || '—'}</div>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 bg-emerald-50/60 p-3 rounded-xl border border-emerald-200">
+                      <div className="flex items-center gap-3 bg-[#FDF3D6] p-3 rounded-xl border border-[#EED895]">
                         <img
                           src={reqItem?.imageUrl || 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=300&q=80'}
                           alt={reqItem?.title}
-                          className="w-12 h-14 rounded-lg object-cover border border-emerald-200"
+                          className="w-12 h-14 rounded-lg object-cover border border-[#EED895]"
                         />
                         <div>
-                          <div className="text-[10px] text-emerald-800 font-medium">From {swap.ownerName}</div>
+                          <div className="text-[10px] text-stone-500 font-medium">From {swap.ownerName}</div>
                           <div className="text-xs font-bold text-stone-900">{reqItem?.title || 'Garment'}</div>
-                          <div className="text-[11px] text-emerald-700 font-semibold">Parity: ₹{reqItem?.estimatedValue || '—'}</div>
+                          <div className="text-[11px] text-[#8A6A1C] font-semibold">Parity: ₹{reqItem?.estimatedValue || '—'}</div>
                         </div>
                       </div>
                     </div>
 
                     {swap.approxDeliveryDate && (
-                      <div className="mt-3 p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-900 flex items-center justify-between gap-2">
+                      <div className="mt-3 p-2.5 bg-[#FCEFC7] rounded-xl border border-[#EED895] text-xs text-[#3B2904] flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4 text-emerald-700 shrink-0" />
+                          <Calendar className="w-4 h-4 text-[#8A6A1C] shrink-0" />
                           <span>Delivered / Exchanged Date: <strong>{new Date(swap.approxDeliveryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</strong></span>
                         </div>
-                        <span className="text-[10px] bg-emerald-100 px-2 py-0.5 rounded text-emerald-800">
+                        <span className="text-[10px] bg-[#F9E6A8] px-2 py-0.5 rounded text-[#453005] border border-[#E5CF88]">
                           {swap.handoverMethod === 'courier' ? 'Courier Dispatch' : 'Local Meetup'}
                         </span>
                       </div>
                     )}
 
-                    <div className="mt-3 flex items-center justify-between text-[11px] text-stone-500 pt-2 border-t border-stone-100">
-                      <span className="flex items-center gap-1.5 text-emerald-700 font-medium">
+                    <div className="mt-3 flex items-center justify-between text-[11px] text-stone-600 pt-2 border-t border-[#EED895]">
+                      <span className="flex items-center gap-1.5 text-emerald-800 font-medium">
                         <Leaf className="w-3.5 h-3.5" />
                         Approx. 15 kg CO2 diverted and 2,700L water saved
                       </span>
-                      <span>100% Cashless Barter Verified</span>
+                      <span className="font-semibold text-[#8A6A1C]">100% Cashless Barter Verified</span>
                     </div>
                   </div>
                 );
@@ -767,30 +766,30 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
       {/* TAB E: DISPUTES */}
       {activeTab === 'disputes' && (
         <div className="space-y-4">
-          <div className="bg-[#F5F2EB] p-4 rounded-2xl border border-[#ECE5D8]">
-            <h3 className="text-sm font-bold text-stone-900">Reported Disputes & Safety Flags</h3>
-            <p className="text-[11px] text-stone-500">
+          <div className="bg-[#FFF9E6] p-4 rounded-2xl border border-[#EED895]">
+            <h3 className="text-sm font-bold text-[#3B2904]">Reported Disputes & Safety Flags</h3>
+            <p className="text-[11px] text-[#54421A]">
               Arbitrate concerns regarding garment quality mismatch, unresponsive swappers, or missed meetups.
             </p>
           </div>
 
           {disputes.length === 0 ? (
-            <div className="bg-[#FAF7F0] rounded-2xl p-8 text-center text-xs text-stone-500 border border-[#E5DFD4]">
+            <div className="bg-[#FFF9E6] rounded-2xl p-8 text-center text-xs text-stone-600 border border-[#EED895]">
               No open disputes reported! The community is running smoothly.
             </div>
           ) : (
             <div className="space-y-3">
               {disputes.map((d) => (
-                <div key={d.id} className="p-4 bg-[#FAF7F0] rounded-2xl border border-[#E5DFD4] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div key={d.id} className="p-4 bg-[#FFF9E6] rounded-2xl border border-[#EED895] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] uppercase font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                      <span className="text-[10px] uppercase font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded border border-amber-300">
                         {d.status}
                       </span>
                       <span className="text-xs font-semibold text-stone-800">Report by {d.reportedByName}</span>
                     </div>
-                    <p className="text-xs text-stone-600 mt-1 font-medium">"{d.reason}"</p>
-                    <span className="text-[10px] text-stone-400">Swap ID: {d.swapId}</span>
+                    <p className="text-xs text-stone-700 mt-1 font-medium">"{d.reason}"</p>
+                    <span className="text-[10px] text-stone-500">Swap ID: {d.swapId}</span>
                   </div>
 
                   {d.status === 'open' && (
@@ -803,7 +802,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
                       </button>
                       <button
                         onClick={() => handleResolveDispute(d.id, 'dismissed')}
-                        className="px-3 py-1.5 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-lg text-xs font-semibold transition"
+                        className="px-3 py-1.5 bg-[#FCEFC7] hover:bg-[#F9E6A8] text-[#54421A] rounded-lg text-xs font-semibold transition border border-[#EED895]"
                       >
                         Dismiss
                       </button>
@@ -818,31 +817,31 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
 
       {/* TAB F: USERS */}
       {activeTab === 'users' && (
-        <div className="bg-[#FAF7F0] rounded-3xl border border-[#E5DFD4] shadow-sm overflow-hidden">
-          <div className="p-4 bg-[#F5F2EB] border-b border-[#ECE5D8]">
-            <h3 className="text-sm font-bold text-stone-900">Registered Swappers</h3>
-            <p className="text-[11px] text-stone-500">Member profiles across Indian cities.</p>
+        <div className="bg-[#FFF9E6] rounded-3xl border border-[#EED895] shadow-xl overflow-hidden">
+          <div className="p-4 bg-[#FCEFC7] border-b border-[#EED895]">
+            <h3 className="text-sm font-bold text-[#3B2904]">Registered Swappers</h3>
+            <p className="text-[11px] text-[#54421A]">Member profiles across Indian cities.</p>
           </div>
-          <div className="divide-y divide-stone-100 text-xs">
+          <div className="divide-y divide-[#EED895]/60 text-xs">
             {users.map((u) => (
-              <div key={u.id} className="p-4 flex items-center justify-between hover:bg-stone-50">
+              <div key={u.id} className="p-4 flex items-center justify-between hover:bg-[#FAF0CD]/50 transition">
                 <div className="flex items-center gap-3">
                   <img
                     src={u.avatarUrl}
                     alt={u.name}
-                    className="w-10 h-10 rounded-xl object-cover border border-stone-200"
+                    className="w-10 h-10 rounded-xl object-cover border border-[#EED895]"
                   />
                   <div>
                     <div className="font-semibold text-stone-900 flex items-center gap-1.5">
                       <span>{u.name}</span>
                       {u.role === 'admin' && (
-                        <span className="bg-amber-100 text-amber-900 text-[10px] px-1.5 py-0.2 rounded font-bold">Admin</span>
+                        <span className="bg-[#D4AF37] text-stone-950 text-[10px] px-1.5 py-0.2 rounded font-bold">Admin</span>
                       )}
                     </div>
-                    <div className="text-[11px] text-stone-400">{u.city} • {u.email}</div>
+                    <div className="text-[11px] text-stone-500">{u.city} • {u.email}</div>
                   </div>
                 </div>
-                <span className="text-[11px] font-mono text-stone-400">ID: {u.id}</span>
+                <span className="text-[11px] font-mono text-stone-500">ID: {u.id}</span>
               </div>
             ))}
           </div>
