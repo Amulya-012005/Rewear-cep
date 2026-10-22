@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ClothingListing, Dispute, AdminStats, User, SwapRequest } from '../types.ts';
 import { useAuth } from '../context/AuthContext.tsx';
 import { api } from '../services/api.ts';
+import { getSafeImageUrl, handleImageError, handleAvatarError } from '../utils/imageFallback.ts';
 import {
   ShieldCheck,
   Trash2,
@@ -485,9 +486,10 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
                       <div className="flex items-center gap-3 bg-[#FFF9E6] p-2.5 rounded-lg border border-[#EED895]">
                         {offItem?.imageUrl ? (
                           <img
-                            src={offItem.imageUrl}
+                            src={getSafeImageUrl(offItem.imageUrl, offItem.category)}
                             alt={offItem.title}
                             className="w-12 h-14 rounded object-cover border border-[#EED895]"
+                            onError={(e) => handleImageError(e, offItem.category)}
                           />
                         ) : (
                           <div className="w-12 h-14 rounded bg-[#FCEFC7] flex items-center justify-center">
@@ -522,9 +524,10 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
                       <div className="flex items-center gap-3 bg-[#FFF9E6] p-2.5 rounded-lg border border-[#EED895]">
                         {reqItem?.imageUrl ? (
                           <img
-                            src={reqItem.imageUrl}
+                            src={getSafeImageUrl(reqItem.imageUrl, reqItem.category)}
                             alt={reqItem.title}
                             className="w-12 h-14 rounded object-cover border border-[#EED895]"
+                            onError={(e) => handleImageError(e, reqItem.category)}
                           />
                         ) : (
                           <div className="w-12 h-14 rounded bg-[#FCEFC7] flex items-center justify-center">
@@ -827,9 +830,10 @@ export const AdminView: React.FC<AdminViewProps> = ({ onRefreshAll, onGoHome }) 
               <div key={u.id} className="p-4 flex items-center justify-between hover:bg-[#FAF0CD]/50 transition">
                 <div className="flex items-center gap-3">
                   <img
-                    src={u.avatarUrl}
+                    src={getSafeImageUrl(u.avatarUrl)}
                     alt={u.name}
                     className="w-10 h-10 rounded-xl object-cover border border-[#EED895]"
+                    onError={handleAvatarError}
                   />
                   <div>
                     <div className="font-semibold text-stone-900 flex items-center gap-1.5">

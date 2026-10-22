@@ -3,6 +3,8 @@ import { ClothingListing, SwapRequest } from '../types.ts';
 import { useAuth } from '../context/AuthContext.tsx';
 import { api } from '../services/api.ts';
 import { INDIAN_STATE_CAPITALS } from '../data/indiaLocations.ts';
+import { REWEAR_LOGO_URL, REWEAR_FALLBACK_LOGO } from '../assets/logo.ts';
+import { getSafeImageUrl, handleImageError } from '../utils/imageFallback.ts';
 import {
   ShoppingBag,
   Search,
@@ -225,9 +227,15 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
             <div onClick={onBackToHome} className="flex items-center gap-3 cursor-pointer group">
               <div className="relative w-11 h-11 rounded-xl overflow-hidden shadow-lg border border-[#D4AF37]/50 group-hover:scale-105 transition-transform duration-200 shrink-0 bg-[#060E0A]">
                 <img
-                  src="/src/assets/images/rewear_brand_logo_1792598309821.jpg"
+                  src={REWEAR_LOGO_URL}
                   alt="ReWear Logo"
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src !== window.location.origin + REWEAR_FALLBACK_LOGO) {
+                      target.src = REWEAR_FALLBACK_LOGO;
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -548,9 +556,10 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                   >
                     <div className="relative aspect-[3/4] bg-[#F9ECC4] overflow-hidden">
                       <img
-                        src={item.imageUrl}
+                        src={getSafeImageUrl(item.imageUrl, item.category)}
                         alt={item.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => handleImageError(e, item.category)}
                       />
                       <div className="absolute top-2.5 left-2.5 bg-black/60 text-[#FDE68A] text-[10px] px-2 py-0.5 rounded font-bold backdrop-blur-xs">
                         Size: {item.size}
@@ -876,9 +885,10 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                           className="relative aspect-[3/4] bg-[#FEF4D5] overflow-hidden cursor-pointer"
                         >
                           <img
-                            src={item.imageUrl}
+                            src={getSafeImageUrl(item.imageUrl, item.category)}
                             alt={item.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            onError={(e) => handleImageError(e, item.category)}
                           />
                           <div className="absolute top-2.5 left-2.5 bg-black/60 text-[#FDE68A] text-[10px] px-2 py-0.5 rounded font-bold backdrop-blur-xs">
                             Size: {item.size}
@@ -1009,9 +1019,10 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                       <div className="p-3.5 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] flex items-center gap-3">
                         <div className="w-14 h-14 rounded-xl bg-white overflow-hidden shrink-0 border border-[#E8D494]">
                           <img
-                            src={s.offeredItemImage}
+                            src={getSafeImageUrl(s.offeredItemImage)}
                             alt="Offered"
                             className="w-full h-full object-cover"
+                            onError={(e) => handleImageError(e)}
                           />
                         </div>
                         <div className="text-xs space-y-0.5">
@@ -1084,7 +1095,12 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="p-3 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] flex items-center gap-3">
-                        <img src={s.requestedItemImage || s.targetItemImage} alt="Received" className="w-12 h-12 rounded-xl object-cover" />
+                        <img
+                          src={getSafeImageUrl(s.requestedItemImage || s.targetItemImage)}
+                          alt="Received"
+                          className="w-12 h-12 rounded-xl object-cover"
+                          onError={(e) => handleImageError(e)}
+                        />
                         <div>
                           <span className="text-[10px] text-[#7A6430] block uppercase font-bold">You Received:</span>
                           <h4 className="font-bold text-[#1A2E22] text-xs">{s.requestedItemTitle || s.targetItemTitle}</h4>
@@ -1093,7 +1109,12 @@ export const BuyModuleView: React.FC<BuyModuleViewProps> = ({
                       </div>
 
                       <div className="p-3 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] flex items-center gap-3">
-                        <img src={s.offeredItemImage} alt="Given" className="w-12 h-12 rounded-xl object-cover" />
+                        <img
+                          src={getSafeImageUrl(s.offeredItemImage)}
+                          alt="Given"
+                          className="w-12 h-12 rounded-xl object-cover"
+                          onError={(e) => handleImageError(e)}
+                        />
                         <div>
                           <span className="text-[10px] text-[#7A6430] block uppercase font-bold">You Traded Away:</span>
                           <h4 className="font-bold text-[#1A2E22] text-xs">{s.offeredItemTitle}</h4>

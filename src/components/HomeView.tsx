@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext.tsx';
+import { REWEAR_LOGO_URL, REWEAR_FALLBACK_LOGO } from '../assets/logo.ts';
 import {
   Shirt,
   Tag,
@@ -149,9 +150,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-xl overflow-hidden shadow-md border border-[#D4AF37]/50 bg-[#060E0A] shrink-0">
                 <img
-                  src="/src/assets/images/rewear_brand_logo_1792598309821.jpg"
+                  src={REWEAR_LOGO_URL}
                   alt="ReWear Logo"
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src !== window.location.origin + REWEAR_FALLBACK_LOGO) {
+                      target.src = REWEAR_FALLBACK_LOGO;
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -725,9 +732,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#D4AF37]/50 bg-[#060E0A] shadow-md shrink-0">
                   <img
-                    src="/src/assets/images/rewear_brand_logo_1792598309821.jpg"
+                    src={REWEAR_LOGO_URL}
                     alt="ReWear Logo"
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src !== window.location.origin + REWEAR_FALLBACK_LOGO) {
+                        target.src = REWEAR_FALLBACK_LOGO;
+                      }
+                    }}
                   />
                 </div>
                 <span className="text-xl font-serif font-bold text-[#FDE68A]">ReWear</span>

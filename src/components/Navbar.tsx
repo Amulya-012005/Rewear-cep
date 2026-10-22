@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext.tsx';
+import { REWEAR_LOGO_URL, REWEAR_FALLBACK_LOGO } from '../assets/logo.ts';
 import {
   Shirt,
   ShoppingBag,
@@ -137,9 +138,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <div className="relative w-11 h-11 rounded-xl overflow-hidden shadow-lg border border-[#D4AF37]/50 group-hover:scale-105 transition-transform duration-200 shrink-0 bg-[#060E0A]">
               <img
-                src="/src/assets/images/rewear_brand_logo_1792598309821.jpg"
+                src={REWEAR_LOGO_URL}
                 alt="ReWear Logo"
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (target.src !== window.location.origin + REWEAR_FALLBACK_LOGO) {
+                    target.src = REWEAR_FALLBACK_LOGO;
+                  }
+                }}
               />
             </div>
             <div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ClothingListing } from '../types.ts';
 import { useAuth } from '../context/AuthContext.tsx';
 import { api } from '../services/api.ts';
+import { getSafeImageUrl, handleImageError } from '../utils/imageFallback.ts';
 import {
   X,
   ArrowRightLeft,
@@ -12,7 +13,8 @@ import {
   Calendar,
   Truck,
   Users,
-  Info
+  Info,
+  Plus
 } from 'lucide-react';
 
 interface SwapProposalModalProps {
@@ -21,6 +23,39 @@ interface SwapProposalModalProps {
   onSuccess: () => void;
   onOpenCreateListing: () => void;
 }
+
+const STARTER_PRESETS = [
+  {
+    title: "Levi's Classic Blue Denim Trucker Jacket",
+    category: 'Jackets & Hoodies',
+    brand: "Levi's",
+    size: 'M',
+    condition: 'Gently Used',
+    estimatedValue: 1200,
+    imageUrl: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=800&q=80',
+    description: 'Iconic indigo denim trucker jacket with copper shank buttons.'
+  },
+  {
+    title: 'FabIndia Pure Handspun Cotton Kurta - Maroon',
+    category: 'Traditional & Ethnic Wear',
+    brand: 'FabIndia',
+    size: 'L',
+    condition: 'Like New',
+    estimatedValue: 950,
+    imageUrl: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80',
+    description: 'Mandarin collar handcrafted breathable cotton kurta.'
+  },
+  {
+    title: 'Marks & Spencer Pure Linen Casual Shirt - Beige',
+    category: 'Shirts & Tops',
+    brand: 'Marks & Spencer',
+    size: 'M',
+    condition: 'Like New',
+    estimatedValue: 1100,
+    imageUrl: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80',
+    description: 'Breathable French linen button-down shirt in sand beige.'
+  }
+];
 
 export const SwapProposalModal: React.FC<SwapProposalModalProps> = ({
   targetItem,
@@ -41,28 +76,85 @@ export const SwapProposalModal: React.FC<SwapProposalModalProps> = ({
 
   const [isLoadingItems, setIsLoadingItems] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isClaimingStarter, setIsClaimingStarter] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchUserAvailableItems = async () => {
-      if (!user) return;
-      setIsLoadingItems(true);
-      try {
-        const res = await api.getListings({ userId: user.id });
-        const available = res.listings.filter(i => i.status === 'available');
-        setUserItems(available);
-        if (available.length > 0) {
-          setSelectedOfferedItemId(available[0].id);
-        }
-      } catch {
-        setError('Failed to fetch your wardrobe items.');
-      } finally {
-        setIsLoadingItems(false);
+  const fetchUserAvailableItems = async () => {
+    if (!user) return;
+    setIsLoadingItems(true);
+    try {
+      const res = await api.getListings({ userId: user.id });
+      const available = (res.listings || []).filter(i => i.status === 'available');
+      setUserItems(available);
+      if (available.length > 0) {
+        setSelectedOfferedItemId(available[0].id);
       }
-    };
+    } catch {
+      setError('Failed to fetch your wardrobe items.');
+    } finally {
+      setIsLoadingItems(false);
+    }
+  };
 
+  useEffect(() => {
     fetchUserAvailableItems();
   }, [user]);
+
+  const handleClaimStarterItem = async (preset: typeof STARTER_PRESETS[0]) => {
+    if (!user) return;
+    setIsClaimingStarter(true);
+    setError(null);
+    try {
+      const res = await api.createListing({
+        ...preset,
+        city: user.city
+      } as any);
+      if (res && res.listing) {
+        setUserItems(prev => [res.listing, ...prev]);
+        setSelectedOfferedItemId(res.listing.id);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to add item to wardrobe.');
+    } finally {
+      setIsClaimingStarter(false);
+    }
+  };
+
+  const handleClaimAllStarters = async () => {
+    if (!user) return;
+    setIsClaimingStarter(true);
+    setError(null);
+    try {
+      const created: ClothingListing[] = [];
+      for (const preset of STARTER_PRESETS) {
+        const res = await api.createListing({
+          ...preset,
+          city: user.city
+        } as any);
+        if (res && res.listing) created.push(res.listing);
+      }
+      setUserItems(prev => [...created, ...prev]);
+      if (created.length > 0) {
+        // Pick the closest value to targetItem
+        let best = created[0];
+        if (targetItem) {
+          let minDiff = Infinity;
+          for (const item of created) {
+            const diff = Math.abs(item.estimatedValue - targetItem.estimatedValue);
+            if (diff < minDiff) {
+              minDiff = diff;
+              best = item;
+            }
+          }
+        }
+        setSelectedOfferedItemId(best.id);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to claim starter wardrobe.');
+    } finally {
+      setIsClaimingStarter(false);
+    }
+  };
 
   if (!targetItem) return null;
 
@@ -151,9 +243,10 @@ export const SwapProposalModal: React.FC<SwapProposalModalProps> = ({
           <div className="p-4 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] flex items-center justify-between gap-4">
             <div className="flex items-center gap-3.5 min-w-0">
               <img
-                src={targetItem.imageUrl}
+                src={getSafeImageUrl(targetItem.imageUrl, targetItem.category)}
                 alt={targetItem.title}
                 className="w-16 h-18 rounded-xl object-cover border border-[#E8D494] shadow-xs shrink-0"
+                onError={(e) => handleImageError(e, targetItem.category)}
               />
               <div className="min-w-0">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#FDE68A] bg-[#183E2A] px-2 py-0.5 rounded border border-[#D4AF37]/30">
@@ -184,6 +277,16 @@ export const SwapProposalModal: React.FC<SwapProposalModalProps> = ({
               <label className="text-xs font-bold text-[#6B5B30] uppercase tracking-wider">
                 Select an item from your wardrobe to offer:
               </label>
+              {userItems.length > 0 && (
+                <button
+                  type="button"
+                  onClick={onOpenCreateListing}
+                  className="text-xs text-[#8A6A1C] hover:underline font-bold flex items-center gap-1"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>List New Item</span>
+                </button>
+              )}
             </div>
 
             {isLoadingItems ? (
@@ -191,26 +294,77 @@ export const SwapProposalModal: React.FC<SwapProposalModalProps> = ({
                 Loading your wardrobe items...
               </div>
             ) : userItems.length === 0 ? (
-              <div className="p-6 rounded-2xl bg-[#FEF6DB] border border-[#E8D494] text-center space-y-3">
-                <Info className="w-8 h-8 text-[#8A6A1C] mx-auto" />
-                <h4 className="font-serif font-bold text-sm text-[#1A2E22]">
-                  No Available Wardrobe Items Found
-                </h4>
-                <p className="text-xs text-[#6B5B30] max-w-md mx-auto leading-relaxed">
-                  ReWear is a 100% cashless clothing exchange platform where you trade clothes for clothes.
-                  To propose a swap, please visit the <strong>Sell Clothes</strong> module to list an item from your closet!
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    onOpenCreateListing();
-                  }}
-                  className="px-5 py-2.5 bg-[#183E2A] text-[#FDE68A] rounded-xl text-xs font-bold shadow-md hover:bg-[#122A1E] transition inline-flex items-center gap-1.5 border border-[#D4AF37]/40"
-                >
-                  <Tag className="w-3.5 h-3.5 text-[#FDE68A]" />
-                  <span>Go to Sell Clothes Module to List Garment</span>
-                </button>
+              <div className="p-6 rounded-2xl bg-[#FEF6DB] border border-[#E8D494] space-y-4">
+                <div className="text-center space-y-1">
+                  <div className="w-10 h-10 rounded-full bg-[#FEF4D5] text-[#8A6A1C] flex items-center justify-center mx-auto border border-[#E8D494]">
+                    <Sparkles className="w-5 h-5 text-[#8A6A1C]" />
+                  </div>
+                  <h4 className="font-serif font-bold text-sm text-[#1A2E22]">
+                    Ready to Swap: Pick a Garment from Your Wardrobe
+                  </h4>
+                  <p className="text-xs text-[#6B5B30] max-w-md mx-auto leading-relaxed">
+                    Select one of our verified starter items below to add to your closet and propose this swap immediately:
+                  </p>
+                </div>
+
+                {/* 1-Click Starter Presets */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                  {STARTER_PRESETS.map((preset, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      disabled={isClaimingStarter}
+                      onClick={() => handleClaimStarterItem(preset)}
+                      className="p-3 bg-[#FFFDF5] hover:bg-[#FEF4D5] rounded-xl border border-[#EED895] hover:border-[#8A6A1C] text-left transition flex flex-col justify-between group shadow-xs"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <img
+                          src={getSafeImageUrl(preset.imageUrl, preset.category)}
+                          alt={preset.title}
+                          className="w-10 h-12 rounded object-cover border border-[#E8D494] shrink-0"
+                          onError={(e) => handleImageError(e, preset.category)}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="text-[11px] font-bold text-[#1A2E22] truncate group-hover:text-[#8A6A1C]">
+                            {preset.title}
+                          </div>
+                          <div className="text-[10px] text-[#8A6A1C] font-semibold">
+                            ≈ ₹{preset.estimatedValue}
+                          </div>
+                          <div className="text-[9px] text-[#7A6430]">
+                            Size {preset.size}
+                          </div>
+                        </div>
+                      </div>
+                      <span className="text-[10px] text-center font-bold text-[#183E2A] bg-[#FEF4D5] group-hover:bg-[#183E2A] group-hover:text-[#FDE68A] py-1 rounded-md transition border border-[#E8D494]">
+                        + Add & Swap This
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    disabled={isClaimingStarter}
+                    onClick={handleClaimAllStarters}
+                    className="w-full sm:w-auto px-5 py-2.5 bg-[#183E2A] text-[#FDE68A] rounded-xl text-xs font-bold shadow-md hover:bg-[#122A1E] transition inline-flex items-center justify-center gap-1.5 border border-[#D4AF37]/40"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-[#FDE68A]" />
+                    <span>{isClaimingStarter ? 'Adding to Wardrobe...' : 'Claim Full 3-Piece Starter Wardrobe'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onOpenCreateListing();
+                    }}
+                    className="w-full sm:w-auto px-4 py-2 text-xs font-bold text-[#6B5B30] hover:text-[#1A2E22] transition"
+                  >
+                    Or List Custom Garment in Sell Clothes
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-56 overflow-y-auto pr-1">
@@ -227,9 +381,10 @@ export const SwapProposalModal: React.FC<SwapProposalModalProps> = ({
                       }`}
                     >
                       <img
-                        src={item.imageUrl}
+                        src={getSafeImageUrl(item.imageUrl, item.category)}
                         alt={item.title}
                         className="w-12 h-14 rounded-lg object-cover shrink-0 border border-[#E8D494]"
+                        onError={(e) => handleImageError(e, item.category)}
                       />
                       <div className="min-w-0 flex-1">
                         <div className="text-xs font-bold text-[#1A2E22] truncate">

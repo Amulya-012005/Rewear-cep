@@ -3,6 +3,7 @@ import { ClothingListing } from '../types.ts';
 import { MapPin, Leaf, ArrowRightLeft, Shirt } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.tsx';
 import { INDIAN_STATE_CAPITALS } from '../data/indiaLocations.ts';
+import { getSafeImageUrl, handleImageError } from '../utils/imageFallback.ts';
 
 interface NearbySwapsViewProps {
   listings: ClothingListing[];
@@ -147,9 +148,10 @@ export const NearbySwapsView: React.FC<NearbySwapsViewProps> = ({
               >
                 <div className="relative aspect-[4/3] bg-[#FEF4D5] overflow-hidden">
                   <img
-                    src={item.imageUrl}
+                    src={getSafeImageUrl(item.imageUrl, item.category)}
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => handleImageError(e, item.category)}
                   />
                   <div className="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-sm text-[#FDE68A] text-[10px] font-bold px-2 py-0.5 rounded">
                     {item.category}

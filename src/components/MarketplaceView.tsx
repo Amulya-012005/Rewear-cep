@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.tsx';
 import { INDIAN_STATE_CAPITALS } from '../data/indiaLocations.ts';
+import { getSafeImageUrl, handleImageError } from '../utils/imageFallback.ts';
 
 interface MarketplaceViewProps {
   listings: ClothingListing[];
@@ -546,10 +547,11 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
                   onClick={() => onSelectItem(item)}
                 >
                   <img
-                    src={item.imageUrl}
+                    src={getSafeImageUrl(item.imageUrl, item.category)}
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
+                    onError={(e) => handleImageError(e, item.category)}
                   />
 
                   {/* Top Status & Condition */}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ClothingListing } from '../types.ts';
 import { useAuth } from '../context/AuthContext.tsx';
+import { getSafeImageUrl, handleImageError } from '../utils/imageFallback.ts';
 import {
   X,
   MapPin,
@@ -68,12 +69,10 @@ export const ItemDetailsModal: React.FC<ItemDetailsModalProps> = ({
           {/* Left: Product Image */}
           <div className="relative aspect-[3/4] md:aspect-auto md:h-full bg-[#FEF4D5] overflow-hidden">
             <img
-              src={item.imageUrl}
+              src={getSafeImageUrl(item.imageUrl, item.category)}
               alt={item.title}
               className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = fallbackImage;
-              }}
+              onError={(e) => handleImageError(e, item.category)}
             />
 
             {/* Status Overlay */}
@@ -296,12 +295,10 @@ export const ItemDetailsModal: React.FC<ItemDetailsModalProps> = ({
                   className="bg-[#FFF9E6] p-2.5 rounded-2xl border border-[#EED895] hover:border-[#D4AF37] transition cursor-pointer flex items-center gap-3 group shadow-xs"
                 >
                   <img
-                    src={similar.imageUrl}
+                    src={getSafeImageUrl(similar.imageUrl, similar.category)}
                     alt={similar.title}
                     className="w-12 h-14 rounded-xl object-cover shrink-0 group-hover:scale-105 transition-transform"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = fallbackImage;
-                    }}
+                    onError={(e) => handleImageError(e, similar.category)}
                   />
                   <div className="min-w-0 flex-1">
                     <div className="text-[10px] font-bold uppercase tracking-wider text-[#8A6A1C] truncate">

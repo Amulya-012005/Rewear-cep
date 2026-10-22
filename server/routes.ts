@@ -79,6 +79,17 @@ function sanitizeUser(user: User) {
 // 1. AUTHENTICATION ROUTES
 // ==========================================
 
+const SERVER_VERIFIED_AVATARS = [
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80',
+];
+
 // Register
 apiRouter.post('/auth/register', (req: Request, res: Response) => {
   const { email, password, name, city, bio, avatarUrl } = req.body;
@@ -98,6 +109,7 @@ apiRouter.post('/auth/register', (req: Request, res: Response) => {
 
   // Security: users cannot register as admin
   const { hash, salt } = hashPassword(password);
+  const randomAvatar = SERVER_VERIFIED_AVATARS[Math.floor(Math.random() * SERVER_VERIFIED_AVATARS.length)];
   const newUser: User = {
     id: 'usr_' + Math.random().toString(36).substring(2, 9),
     email: email.trim().toLowerCase(),
@@ -106,13 +118,73 @@ apiRouter.post('/auth/register', (req: Request, res: Response) => {
     name: name.trim(),
     city: city.trim(),
     role: 'user', // NEVER allow self-assigning admin
-    avatarUrl: avatarUrl || `https://images.unsplash.com/photo-${1534528741775 + Math.floor(Math.random() * 50)}?auto=format&fit=crop&w=300&q=80`,
+    avatarUrl: avatarUrl || randomAvatar,
     bio: bio || 'Sustainable fashion lover eager to exchange clothes and reduce textile waste.',
     createdAt: new Date().toISOString()
   };
 
   db.createUser(newUser);
   const session = db.createSession(newUser.id);
+
+  // Auto-seed starter wardrobe for newly registered user so they have items available for swap
+  const now = new Date().toISOString();
+  db.createListing({
+    id: `lst_${newUser.id}_starter_1`,
+    userId: newUser.id,
+    userName: newUser.name,
+    userCity: newUser.city,
+    title: "Levi's Classic Blue Denim Trucker Jacket",
+    description: "Timeless medium-wash indigo denim jacket with copper buttons and double chest pockets.",
+    category: 'Jackets & Hoodies',
+    brand: "Levi's",
+    size: 'M',
+    condition: 'Gently Used',
+    city: newUser.city,
+    estimatedValue: 1200,
+    imageUrl: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=800&q=80',
+    status: 'available',
+    createdAt: now,
+    updatedAt: now,
+    isDemo: false
+  });
+  db.createListing({
+    id: `lst_${newUser.id}_starter_2`,
+    userId: newUser.id,
+    userName: newUser.name,
+    userCity: newUser.city,
+    title: 'FabIndia Pure Handspun Cotton Kurta - Maroon',
+    description: 'Breathable handwoven organic cotton kurta with mandarin collar and wooden toggle buttons.',
+    category: 'Traditional & Ethnic Wear',
+    brand: 'FabIndia',
+    size: 'L',
+    condition: 'Like New',
+    city: newUser.city,
+    estimatedValue: 950,
+    imageUrl: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80',
+    status: 'available',
+    createdAt: now,
+    updatedAt: now,
+    isDemo: false
+  });
+  db.createListing({
+    id: `lst_${newUser.id}_starter_3`,
+    userId: newUser.id,
+    userName: newUser.name,
+    userCity: newUser.city,
+    title: 'Marks & Spencer Pure Linen Casual Shirt - Beige',
+    description: 'Crisp sand beige French linen button-down shirt with chest pocket.',
+    category: 'Shirts & Tops',
+    brand: 'Marks & Spencer',
+    size: 'M',
+    condition: 'Like New',
+    city: newUser.city,
+    estimatedValue: 1100,
+    imageUrl: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80',
+    status: 'available',
+    createdAt: now,
+    updatedAt: now,
+    isDemo: false
+  });
 
   res.status(201).json({
     user: sanitizeUser(newUser),

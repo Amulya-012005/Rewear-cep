@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { api } from '../services/api.ts';
 import { INDIAN_STATE_CAPITALS } from '../data/indiaLocations.ts';
+import { getSafeImageUrl, handleImageError } from '../utils/imageFallback.ts';
 
 interface CreateEditListingModalProps {
   itemToEdit?: ClothingListing | null;
@@ -343,9 +344,10 @@ export const CreateEditListingModal: React.FC<CreateEditListingModalProps> = ({
             {imageUrl ? (
               <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-[#FEF4D5] border border-[#E8D494]">
                 <img
-                  src={imageUrl}
+                  src={getSafeImageUrl(imageUrl, category)}
                   alt="Preview"
                   className="w-full h-full object-cover"
+                  onError={(e) => handleImageError(e, category)}
                 />
                 <button
                   type="button"

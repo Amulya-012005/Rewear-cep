@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SwapRequest } from '../types.ts';
 import { useAuth } from '../context/AuthContext.tsx';
 import { api } from '../services/api.ts';
+import { getSafeImageUrl, handleImageError } from '../utils/imageFallback.ts';
 import {
   ArrowRightLeft,
   MessageSquare,
@@ -266,9 +267,10 @@ export const SwapRequestsView: React.FC<SwapRequestsViewProps> = ({
                   {/* Item 1: Requested Item */}
                   <div className="p-3.5 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] flex items-center gap-3">
                     <img
-                      src={swap.requestedItemImage}
+                      src={getSafeImageUrl(swap.requestedItemImage)}
                       alt={swap.requestedItemTitle}
                       className="w-16 h-20 rounded-xl object-cover shrink-0 border border-[#E8D494]"
+                      onError={(e) => handleImageError(e)}
                     />
                     <div className="min-w-0 flex-1">
                       <span className="text-[10px] font-bold text-[#7A6430] uppercase tracking-wider block">
@@ -290,9 +292,10 @@ export const SwapRequestsView: React.FC<SwapRequestsViewProps> = ({
                   {/* Item 2: Offered Item */}
                   <div className="p-3.5 bg-[#FEF4D5] rounded-2xl border border-[#E8D494] flex items-center gap-3">
                     <img
-                      src={swap.offeredItemImage}
+                      src={getSafeImageUrl(swap.offeredItemImage)}
                       alt={swap.offeredItemTitle}
                       className="w-16 h-20 rounded-xl object-cover shrink-0 border border-[#E8D494]"
+                      onError={(e) => handleImageError(e)}
                     />
                     <div className="min-w-0 flex-1">
                       <span className="text-[10px] font-bold text-[#7A6430] uppercase tracking-wider block">
